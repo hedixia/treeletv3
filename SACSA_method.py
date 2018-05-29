@@ -1,10 +1,11 @@
 from SA_method import SA_clust
 import qfs
 
-class SACSA_clust (SA_clust):
+
+class SACSA_clust(SA_clust):
 	def __init__ (self, dataset, slice, sample_para, num_clust, kernel):
 		temp_clust = SA_clust(dataset, slice, sample_para)
-		temp_clust.K = kernel 
+		temp_clust.K = kernel
 		temp_clust.tree()
 		flc = temp_clust.clusters(num_clust, "D")
 		refined_samp = []
@@ -16,3 +17,4 @@ class SACSA_clust (SA_clust):
 			fine_samp = [flc[clust_1][k] for k in qfs.dlsamp(fine_clusters, 1)]
 			refined_samp += fine_samp
 		super().__init__(dataset, slice, refined_samp, kernel)
+

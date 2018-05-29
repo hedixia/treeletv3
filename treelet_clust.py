@@ -1,11 +1,11 @@
-import numpy as np 
+import numpy as np
 from treelet import treelet
 import qfs
 
-class treelet_clust:
 
-	psi = lambda x,y,z : np.abs(x) / np.sqrt(np.abs(y*z))
-	
+class treelet_clust:
+	psi = lambda x, y, z:np.abs(x) / np.sqrt(np.abs(y * z))
+
 	def __init__ (self, dataset_ref, kernel, slice=False, num_clust=0, all_kernel=False):
 		self.kernel = kernel
 		self.dataset_ref = dataset_ref
@@ -15,7 +15,8 @@ class treelet_clust:
 			temp_slice = np.array(self.__slice, dtype=np.intp)
 			self.A = all_kernel[temp_slice[:, np.newaxis], temp_slice]
 		else:
-			self.A = np.array([[self.kernel(self.dataset[i], self.dataset[j]) for i in self.__slice] for j in self.__slice])
+			self.A = np.array(
+				[[self.kernel(self.dataset[i], self.dataset[j]) for i in self.__slice] for j in self.__slice])
 
 	def build (self):
 		trl = treelet(self.A, psi)
@@ -36,13 +37,14 @@ class treelet_clust:
 				current = temp_labels[current]
 		self.labels = dict(zip(self.__slice, temp_labels))
 		self.clusters = qfs.l2c(self.labels)
-		
-	def clusters(self, return_type="C"):
+
+	def clusters (self, return_type="C"):
 		if return_type == "C":
 			return self.clusters
 		else:
 			return self.labels
-		
+
+
 """
 tc = treelet_clust(dat, ker, slice, num_clust)
 tc.build()
