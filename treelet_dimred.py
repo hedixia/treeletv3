@@ -2,17 +2,11 @@ import numpy as np
 from treelet import treelet
 
 class treelet_dimred:
-	def __init__ (self, dataset):
-		self.dataset = np.matrix(dataset)
-		self.datasetT = dataset.getT()
-	
-	def cov(self, A=False):
-		if A:
-			self.cov = A 
-		else:
-			self.cov = np.cov(self.datasetT)
+	def __init__ (self, dataset_ref, cov=False):
+		self.dataset_ref = dataset_ref
+		self.cov = cov if cov else np.cov(np.matrix(dataset_ref).getT())
 		
-	def tree(self, t=0):
+	def build (self, t=0):
 		psi = lambda x,y,z : abs(x)/np.sqrt(np.abs(y * z)) + abs(x) * t
 		self.trl = treelet(self.cov, psi)
 		self.n = self.trl.n 
@@ -20,17 +14,16 @@ class treelet_dimred:
 		self.dfrk = self.trl.dfrk
 		
 	#Treelet Transform
-	def forw (self, v, k=None, epsilon=None):
-		if k == None:
-			k = self.n - 1
+	def forw (self, v, k=False, epsilon=0):
+		k = k if k else self.n - 1
 		for iter in range(k):
 			(scv, cgs, cos_val, sin_val) = self.transform_list [iter]
 			temp_scv = cos_val * v[scv] - sin_val * v[cgs]
 			temp_cgs = sin_val * v[scv] + cos_val * v[cgs]
 			v[scv] = temp_scv
 			v[cgs] = temp_cgs
-		if epsilon == None:
-			return v
+		if epsilon == 0:
+			return [v, None]
 		else:
 			newdict = {}
 			newvec = np.zeros(n-k)
@@ -40,7 +33,7 @@ class treelet_dimred:
 						newdict[self.dfrk[i]] = v[self.dfrk[i]]
 				else:
 					newvec[i] = v[self.dfrk[i+k]]
-			return (newvec, newdict)
+			return [newvec, newdict]
 			
 	def back (self, v, diffdict={}):
 		k = self.n - len(v)

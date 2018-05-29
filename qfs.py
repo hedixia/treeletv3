@@ -1,21 +1,18 @@
 import random
-#turn a list to a dict from val -> [entries]
-def l2dl (some_list):
+#get inverse of a single-valued dict 
+def l2c (some_dict):
 	temp_dict = {}
-	for i in range(len(some_list)):
-		temp_dict.setdefault(some_list[i], []).append(i)
+	for i in some_dict:
+		temp_dict.setdefault(some_dict[i], []).append(i)
 	return temp_dict
 	
-#reverse l2dl 
-def rl2dl (some_dict):
-	n = 0
-	for i in somedict:
-		n += len(somedict[i])
-	temp_list = [None] * n 
+#reverse above step
+def c2l (some_dict):
+	temp_dict = {}
 	for i in somedict:
 		for j in somedict[i]:
-			temp_list[j] = i 
-	return temp_list
+			temp_dict[j] = i 
+	return temp_dict
 	
 #sample one element from each cluster while ignoring the clusters with number less than or equal to ignore 
 def dlsamp (some_dict_list, ignore=0):
@@ -36,12 +33,11 @@ def argmax (L, f): #return $x\in L$ such that $f(x) = max \ f(L)$
 	maxarg = None 
 	maxval = 0
 	for x in L:
-		if maxarg == None:
-			maxarg = x 
-			maxval = f(x)
-		if f(x) > maxval:
-			maxarg = x 
-			maxval = f(x)
+		if maxarg is not None:
+			if f(x) <= maxval:
+				break
+		maxarg = x 
+		maxval = f(x)
 	return maxarg
 	
 def lapply (L, f):

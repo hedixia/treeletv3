@@ -21,3 +21,6 @@ class kernel:
 			#$K(x,y) = exp\{-\frac{||y-x||^2}{2\sigma^2}\}$
 			sigma = self.parameters[0]
 			return np.exp(-(np.inner(y-x,y-x))/2/sigma/sigma)
+			
+	def __bool__ (self):
+		return True

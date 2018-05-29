@@ -3,54 +3,48 @@ from treelet import treelet
 import qfs
 
 class treelet_clust:
-	def __init__ (self, dataset, slice=False, kernel=False):
-		self.K = kernel
-		self.dataset = np.array(dataset)
-		self.n = self.dataset.shape[0]
-		self.__slice = slice if slice else range(self.n)
-		self.psi = lambda x,y,z : np.abs(x) / np.sqrt(np.abs(y*z))
 
-	def cor(self, A=False):
-		if A:
-			self.A = A
-		#This step can be speeded up with parallel computing
-		self.A = np.array([[self.K(self.dataset[i,:], self.dataset[j,:]) for i in self.__slice] for j in self.__slice])
-		
-	def tree(self, cor=False):
-		if not hasattr(self, 'A'):
-			self.cor()
-		trl = treelet(self.A, self.psi)
+	psi = lambda x,y,z : np.abs(x) / np.sqrt(np.abs(y*z))
+	
+	def __init__ (self, dataset_ref, kernel, slice=False, num_clust=0, all_kernel=False):
+		self.kernel = kernel
+		self.dataset_ref = dataset_ref
+		self.__slice = slice if slice else range(len(dataset_ref))
+		self.num_clust = num_clust
+		if all_kernel:
+			temp_slice = np.array(self.__slice, dtype=np.intp)
+			self.A = all_kernel[temp_slice[:, np.newaxis], temp_slice]
+		else:
+			self.A = np.array([[self.kernel(self.dataset[i], self.dataset[j]) for i in self.__slice] for j in self.__slice])
+
+	def build (self):
+		trl = treelet(self.A, psi)
 		trl.fullrotate()
 		self.cltree = trl.tree()
-		
-	def clusters(self, num_clust, return_type="L"):
-		#requires self.tree being called
-		n = self.n
-		labels = [i for i in range(n)]
-		for i in range(n - num_clust):
-			labels[self.cltree[i][1]] = self.cltree[i][0]
+		n = len(self.__slice)
+		temp_labels = [i for i in range(n)]
+		for i in range(n - self.num_clust):
+			temp_labels[self.cltree[i][1]] = self.cltree[i][0]
 		for i in range(n):
 			current = i
-			while True:
-				if current == labels[current]:
-					break 
-				else:
-					current = labels[current]
+			while current != temp_labels[current]:
+				current = temp_labels[current]
 			ending = current
 			current = i
 			while current != ending:
-				next = labels[current]
-				labels[current] = ending
-				current = next
-		if return_type == "L":
-			return labels
+				temp_labels[current] = ending
+				current = temp_labels[current]
+		self.labels = dict(zip(self.__slice, temp_labels))
+		self.clusters = qfs.l2c(self.labels)
+		
+	def clusters(self, return_type="C"):
+		if return_type == "C":
+			return self.clusters
 		else:
-			return qfs.l2dl(labels)
+			return self.labels
 		
 """
-tc = treelet_clust(dat)
-tc.K = Kernel
-tc.cor() #this step may be ignored
-tc.tree()
-tc.clusters(num)
+tc = treelet_clust(dat, ker, slice, num_clust)
+tc.build()
+tc.clusters()
 """
