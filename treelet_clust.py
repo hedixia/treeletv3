@@ -4,7 +4,8 @@ import qfs
 
 
 class treelet_clust:
-	psi = lambda x, y, z:np.abs(x) / np.sqrt(np.abs(y * z))
+	def psi (self, x, y, z): 
+		return np.abs(x) / np.sqrt(np.abs(y * z))
 
 	def __init__ (self, dataset_ref, kernel, slice=False, num_clust=0, all_kernel=False):
 		self.kernel = kernel
@@ -16,10 +17,10 @@ class treelet_clust:
 			self.A = all_kernel[temp_slice[:, np.newaxis], temp_slice]
 		else:
 			self.A = np.array(
-				[[self.kernel(self.dataset[i], self.dataset[j]) for i in self.__slice] for j in self.__slice])
+				[[self.kernel(self.dataset_ref[i], self.dataset_ref[j]) for i in self.__slice] for j in self.__slice])
 
 	def build (self):
-		trl = treelet(self.A, psi)
+		trl = treelet(self.A, self.psi)
 		trl.fullrotate()
 		self.cltree = trl.tree()
 		n = len(self.__slice)
@@ -38,7 +39,7 @@ class treelet_clust:
 		self.labels = dict(zip(self.__slice, temp_labels))
 		self.clusters = qfs.l2c(self.labels)
 
-	def clusters (self, return_type="C"):
+	def get (self, return_type="C"):
 		if return_type == "C":
 			return self.clusters
 		else:
@@ -48,5 +49,5 @@ class treelet_clust:
 """
 tc = treelet_clust(dat, ker, slice, num_clust)
 tc.build()
-tc.clusters()
+tc.get()
 """
