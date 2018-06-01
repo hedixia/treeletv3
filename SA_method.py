@@ -15,20 +15,19 @@ class SA_clust(treelet_clust):
 			self.sample_index = sample(self.__slice, sample_para)
 		else:
 			self.sample_index = sample_para
-		sample_data = [dataset_ref[i] for i in self.sample_index]
-		super().__init__(dataset_ref, kernel, slice, num_clust, all_kernel)
+		super().__init__(dataset_ref, kernel, self.sample_index, num_clust, all_kernel)
 		
-	def build (self, return_type="L"):
+	def build (self):
 		super().build()
 		self.labels = dict(zip(self.__slice, self.__assignment(self.clusters)))
 		self.clusters = qfs.l2c(self.labels)
 
 	def __enter_slice (self, slice):
 		if type(slice) == int:
-			self.size = slice
+			self.__size = slice
 			self.__slice = [i for i in range(slice)]
 		else:
-			self.size = len(slice)
+			self.__size = len(slice)
 			self.__slice = slice
 
 	def __aff (self, v, w, index=(True, True), clusters=False):
@@ -45,7 +44,7 @@ class SA_clust(treelet_clust):
 		return self.K(v, w)
 
 	def __assignment (self, clust_dict):
-		return_list = [None] * self.size
+		return_list = [None] * self.__size
 		clust_name = list(clust_dict)
 		temp_score = {}
 		for one_data_index in range(len(self.__slice)):

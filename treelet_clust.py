@@ -1,9 +1,10 @@
 import numpy as np
 from treelet import treelet
+from clust import clust
 import qfs
 
 
-class treelet_clust:
+class treelet_clust (clust):
 	def psi (self, x, y, z): 
 		return np.abs(x) / np.sqrt(np.abs(y * z))
 
@@ -38,13 +39,6 @@ class treelet_clust:
 				current = temp_labels[current]
 		self.labels = dict(zip(self.__slice, temp_labels))
 		self.clusters = qfs.l2c(self.labels)
-
-	def get (self, return_type="C"):
-		if return_type == "C":
-			return self.clusters
-		else:
-			return self.labels
-
 
 """
 tc = treelet_clust(dat, ker, slice, num_clust)
