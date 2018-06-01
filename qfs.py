@@ -1,3 +1,5 @@
+#This file is currently inactive
+"""
 import random
 
 
@@ -50,3 +52,4 @@ def argmax (L, f):  # return $x\in L$ such that $f(x) = max \ f(L)$
 
 def lapply (L, f):
 	return [f(x) for x in L]
+"""
