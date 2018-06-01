@@ -1,7 +1,5 @@
 from treelet_clust import treelet_clust
 from random import sample
-import qfs
-import numpy
 
 
 class SA_clust(treelet_clust):
@@ -20,7 +18,7 @@ class SA_clust(treelet_clust):
 	def build (self):
 		super().build()
 		self.labels = dict(zip(self.__slice, self.__assignment(self.clusters)))
-		self.clusters = qfs.l2c(self.labels)
+		self._l2c()
 
 	def __enter_slice (self, slice):
 		if type(slice) == int:

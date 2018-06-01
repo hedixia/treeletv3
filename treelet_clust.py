@@ -1,7 +1,6 @@
 import numpy as np
 from treelet import treelet
 from clust import clust
-import qfs
 
 
 class treelet_clust (clust):
@@ -38,7 +37,7 @@ class treelet_clust (clust):
 				temp_labels[current] = ending
 				current = temp_labels[current]
 		self.labels = dict(zip(self.__slice, temp_labels))
-		self.clusters = qfs.l2c(self.labels)
+		self._l2c()
 
 """
 tc = treelet_clust(dat, ker, slice, num_clust)

@@ -1,5 +1,4 @@
 from SA_method import SA_clust
-import qfs
 
 
 class SA2_clust(SA_clust):

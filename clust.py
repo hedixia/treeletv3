@@ -20,3 +20,14 @@ class clust:
 			print("\nClusters\n")
 		for i in self.clusters:
 			print(i, self.clusters[i])
+
+	def _l2c (self):
+		self.clusters = {}
+		for i in self.labels:
+			self.clusters.setdefault(self.labels[i], []).append(i)
+
+	def _c2l (self):
+		self.labels = {}
+		for i in self.clusters:
+			for j in self.clusters[i]:
+				self.labels[j] = i
