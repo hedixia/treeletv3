@@ -15,7 +15,7 @@ class treelet_classifier (treelet_clust):
 		trl.fullrotate()
 		self.cltree = trl.tree()
 		rjlist = [False] * self.size
-		clustlist = np.arange(self.size, dtype=np.intp)
+		clusters = {x:[x] for x in range(self.size)}
 		weightlist = [0] * self.size
 		for tup in self.cltree:
 			if rjlist[tup[0]]:
@@ -23,20 +23,21 @@ class treelet_classifier (treelet_clust):
 			if rjlist[tup[1]]:
 				rjlist[tup[0]] = True
 				continue 
-			len_0 = np.sum(clustlist == tup[0])
-			len_1 = np.sum(clustlist == tup[1])
-			newdata = [self.dataset_ref[i] for i in range(self.size) if clustlist[i] in tup]
-			newlab = [self.trlabel[i] for i in range(self.size) if clustlist[i] in tup]
-			trpred = self.CLM(newdata, newlab)(newdata)
-			trerr = np.mean(np.array(trpred) == np.array(newlab))
+			len_0 = len(clusters[tup[0]])
+			len_1 = len(clusters[tup[1]])
+			comb_data = clusters[tup[0]] + clusters[tup[1]]
+			trCLM = self.CLM(self.dataset_ref, self.trlabel, slice=comb_data)
+			trCLM.build()
+			trerr = trCLM.training_error()
 			newweight = trerr - 1/ (len_0 + len_1)
 			if weightlist[tup[1]] + weightlist[tup[0]] <= newweight:
-				clustlist[tup[1]] = tup[0]
+				clusters[tup[0]] = comb_data
+				del clusters[tup[1]]
 				weightlist[tup[0]] = newweight
 			else:
 				rjlist[tup[0]] = True
-		self.labels = dict(zip(self.slice, clustlist))
-		self._l2c()
+		self.clusters = {[slice[j] for j in clusters[i]] for i in clusters}
+		self._c2l()
 	
 	def predict (self, test_dataset, clust_info=False):
 		test_label = [None for i in test_dataset]
