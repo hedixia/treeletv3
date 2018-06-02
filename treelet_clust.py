@@ -3,7 +3,7 @@ from treelet import treelet
 from clust import clust
 
 
-class treelet_clust (clust):
+class treelet_clust(clust):
 	def __init__ (self, dataset_ref, kernel, slice=False, num_clust=0, all_kernel=False):
 		super().__init__(dataset_ref, slice)
 		self.kernel = kernel
@@ -35,6 +35,7 @@ class treelet_clust (clust):
 				current = temp_labels[current]
 		self.labels = dict(zip(self.slice, temp_labels))
 		self._l2c()
+
 
 """
 tc = treelet_clust(dat, ker, slice, num_clust)

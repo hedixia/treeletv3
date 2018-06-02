@@ -19,7 +19,7 @@ class clust:
 
 	def show (self, title=False):
 		if title:
-			print ("\n" + title + "\n")
+			print("\n" + title + "\n")
 		else:
 			print("\nClusters\n")
 		for i in self.clusters:

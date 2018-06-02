@@ -1,11 +1,12 @@
-import numpy as np 
+import numpy as np
 from collections import Counter
 from treelet import treelet
 from treelet_clust import treelet_clust
 from classifier import classifier
 
+
 class MajorityVote(classifier):
-	def build(self):
+	def build (self):
 		super().build()
 		cnt = Counter()
 		for i in slice:
@@ -17,19 +18,18 @@ class MajorityVote(classifier):
 	def predict (self, test_data):
 		return self.labels
 
-	def predict_multiple(self, test_dataset, slice=False):
+	def predict_multiple (self, test_dataset, slice=False):
 		temp = classifier(slice=slice)
 		return {x:self.labels for x in temp.slice}
 
 
-class treelet_classifier (classifier):
+class treelet_classifier(classifier):
 	def __init__ (self, dataset_ref, kernel, trlabel, slice=False, CLM=MajorityVote, all_kernel=False):
 		super().__init__(dataset_ref, trlabel, slice)
 		self.clust = treelet_clust(dataset_ref, kernel, slice, 0, all_kernel)
 		self.trlabel = trlabel
-		self.CLM = CLM
-		#prediction = CLM(training_set, training_label, slice=range(len(training_set)))(test_data)
-		
+		self.CLM = CLM  # prediction = CLM(training_set, training_label, slice=range(len(training_set)))(test_data)
+
 	def build (self):
 		super().build()
 		trl = treelet(self.clust.A, self.clust.psi)
@@ -40,17 +40,17 @@ class treelet_classifier (classifier):
 		weightlist = [0] * self.size
 		for tup in self.cltree:
 			if rjlist[tup[0]]:
-				continue 
+				continue
 			if rjlist[tup[1]]:
 				rjlist[tup[0]] = True
-				continue 
+				continue
 			len_0 = len(clusters[tup[0]])
 			len_1 = len(clusters[tup[1]])
 			comb_data = clusters[tup[0]] + clusters[tup[1]]
 			trCLM = self.CLM(self.dataset_ref, self.trlabel, slice=comb_data)
 			trCLM.build()
 			trerr = trCLM.training_error()
-			newweight = trerr - 1/ (len_0 + len_1)
+			newweight = trerr - 1 / (len_0 + len_1)
 			if weightlist[tup[1]] + weightlist[tup[0]] <= newweight:
 				clusters[tup[0]] = comb_data
 				del clusters[tup[1]]
@@ -60,10 +60,9 @@ class treelet_classifier (classifier):
 		self.clusters = {[slice[j] for j in clusters[i]] for i in clusters}
 		self._c2l()
 
-	def predict(self, test_data):
+	def predict (self, test_data):
 		super().predict(test_data)
 
-	
 	def predict_multiple (self, test_dataset, clust_info=False):
 		test_label = [None for i in test_dataset]
 		cluster_assignment = [self.assign(each_data) for each_data in test_dataset]
@@ -80,16 +79,16 @@ class treelet_classifier (classifier):
 		if clust_info:
 			return cluster_assignment, cluster_tsdata
 		return test_label
-		
+
 	def assign (self, data):
-		linkf = lambda x : self.kernel(self.dataset_ref[x], data)
+		linkf = lambda x:self.kernel(self.dataset_ref[x], data)
 		closest = max(self.slice, key=linkf)
 		return self.labels[closest]
-		
+
 	def purity (self, slice=None):
 		cnt = Counter()
 		if slice == None:
 			slice = self.slice
 		for i in slice:
 			cnt[self.trlabel[i]] += 1
-		return max(cnt.values())/sum(cnt.values())
+		return max(cnt.values()) / sum(cnt.values())

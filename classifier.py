@@ -1,7 +1,7 @@
 from clust import clust
 
 
-class classifier (clust):
+class classifier(clust):
 	def __init__ (self, dataset_ref=[], trlabel=[], slice=False):
 		super().__init__(dataset_ref, slice)
 		self.trlabel = trlabel
