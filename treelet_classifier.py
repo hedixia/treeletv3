@@ -2,7 +2,7 @@ import numpy as np
 from collections import Counter
 from treelet import treelet
 from treelet_clust import treelet_clust
-from qfs import compare, index, argmax
+from qfs import compare, index
 
 class treelet_classifier (treelet_clust):
 	def __init__ (self, dataset_ref, kernel, trlabel, slice=False, CLM=MajorityVote, all_kernel=False):
