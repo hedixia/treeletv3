@@ -2,7 +2,6 @@ import numpy as np
 from collections import Counter
 from treelet import treelet
 from treelet_clust import treelet_clust
-from qfs import compare, index
 
 class treelet_classifier (treelet_clust):
 	def __init__ (self, dataset_ref, kernel, trlabel, slice=False, CLM=MajorityVote, all_kernel=False):
@@ -29,8 +28,8 @@ class treelet_classifier (treelet_clust):
 			newdata = [self.dataset_ref[i] for i in range(self.size) if clustlist[i] in tup]
 			newlab = [self.trlabel[i] for i in range(self.size) if clustlist[i] in tup]
 			trpred = self.CLM(newdata, newlab)(newdata)
-			trerr = compare(trpred, newlab)
-			newweight = index(trerr, len_0, len_1)
+			trerr = np.mean(np.array(trpred) == np.array(newlab))
+			newweight = trerr - 1/ (len_0 + len_1)
 			if weightlist[tup[1]] + weightlist[tup[0]] <= newweight:
 				clustlist[tup[1]] = tup[0]
 				weightlist[tup[0]] = newweight
@@ -58,7 +57,7 @@ class treelet_classifier (treelet_clust):
 		
 	def assign (self, data):
 		linkf = lambda x : self.kernel(self.dataset_ref[x], data)
-		closest = max(self.slice, linkf)
+		closest = max(self.slice, key=linkf)
 		return self.labels[closest]
 		
 	def purity (self, slice=None):
@@ -68,4 +67,3 @@ class treelet_classifier (treelet_clust):
 		for i in slice:
 			cnt[self.trlabel[i]] += 1
 		return max(cnt.values())/sum(cnt.values())
-	
