@@ -36,6 +36,9 @@ class clust:
 			self.size = len(slice)
 			self.slice = slice
 
+	def __len__ (self):
+		return self.size
+
 	def _l2c (self):
 		self.clusters = {}
 		for i in self.labels:
