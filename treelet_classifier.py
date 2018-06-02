@@ -1,21 +1,25 @@
 import numpy as np 
 from collections import Counter
 from treelet import treelet
+from treelet_clust import treelet_clust
 
 
-class treelet_classifier:
+class treelet_classifier (treelet_clust):
 	def __init__ (self, dataset_ref, kernel, label, slice=False, CLM=MajorityVote, all_kernel=False):
-		self.clust = treelet_clust(dataset_ref, kernel, slice, 0, all_kernel)
+		super().__init__(dataset_ref, kernel, slice, 0, all_kernel)
 		self.K = kernel
 		self.label = label
+		self.__slice = self.clust.
 		self.CLM = CLM
 		#prediction = CLM(training_set, training_label, slice=range(len(training_set)))(test_data)
 		
 	def build (self):
-		self.clust.build()
-		rjlist = [False for i in range(self.n)]
-		clustlist = np.array([i for i in range(self.n)])
-		weightlist = [0 for i in range(self.n)]
+		trl = treelet(self.clust.A, self.clust.psi)
+		trl.fullrotate()
+		self.cltree = trl.tree()
+		rjlist = [False for i in range(self.__n)]
+		clustlist = np.array([i for i in range(self.__n)])
+		weightlist = [0 for i in range(self.__n)]
 		for tup in self.cltree:
 			if rjlist[tup[0]]:
 				continue 
@@ -24,8 +28,8 @@ class treelet_classifier:
 				continue 
 			len_0 = np.sum(clustlist == tup[0])
 			len_1 = np.sum(clustlist == tup[1])
-			newdata = [self.dataset[i] for i in range(self.n) if clustlist[i] in tup]
-			newlab = [self.label[i] for i in range(self.n) if clustlist[i] in tup]
+			newdata = [self.dataset[i] for i in range(self.__n) if clustlist[i] in tup]
+			newlab = [self.label[i] for i in range(self.__n) if clustlist[i] in tup]
 			trpred = self.CLM(newdata, newlab)(newdata)
 			trerr = compare(trpred, newlab)
 			newweight = index(trerr, len_0, len_1)

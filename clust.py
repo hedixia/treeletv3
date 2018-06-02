@@ -1,6 +1,10 @@
+import numpy as np
+
+
 class clust:
-	def __init__ (self):
-		pass
+	def __init__ (self, dataset_ref=[], slice=False):
+		self.dataset_ref = dataset_ref
+		self.input_slice(slice)
 
 	def build (self):
 		self.labels = {}
@@ -21,6 +25,17 @@ class clust:
 		for i in self.clusters:
 			print(i, self.clusters[i])
 
+	def input_slice (self, slice):
+		if slice is False:
+			self.size = len(self.dataset_ref)
+			self.slice = range(self.size)
+		elif type(slice) is int:
+			self.size = slice
+			self.slice = range(slice)
+		else:
+			self.size = len(slice)
+			self.slice = slice
+
 	def _l2c (self):
 		self.clusters = {}
 		for i in self.labels:
@@ -31,3 +46,6 @@ class clust:
 		for i in self.clusters:
 			for j in self.clusters[i]:
 				self.labels[j] = i
+
+	def psi (self, x, y, z):
+		return np.abs(x) / np.sqrt(np.abs(y * z))

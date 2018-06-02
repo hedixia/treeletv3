@@ -41,6 +41,10 @@ class treelet:
 		self.max_row = {i:0 for i in range(self.n)}
 		self.transform_list = []
 
+	# Treelet Tree
+	def tree (self):
+		return [I[0:2] for I in self.transform_list]
+
 	def fullrotate (self):
 		self.rotate(self.n - 1)
 		self.root = list(self.max_row)[0]
@@ -104,6 +108,4 @@ class treelet:
 		del self.max_row[self.current[1]]
 		del self.max_row_val[self.current[1]]
 
-	# Treelet Tree
-	def tree (self):
-		return [I[0:2] for I in self.transform_list]
+
