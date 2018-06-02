@@ -16,6 +16,8 @@ class treelet_clust (clust):
 				[[self.kernel(self.dataset_ref[i], self.dataset_ref[j]) for i in self.slice] for j in self.slice])
 
 	def build (self):
+		if self.size is 0:
+			raise ValueError
 		trl = treelet(self.A, self.psi)
 		trl.fullrotate()
 		self.cltree = trl.tree()
