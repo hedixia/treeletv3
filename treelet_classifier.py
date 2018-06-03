@@ -28,7 +28,7 @@ class treelet_classifier(classifier):
 		super().__init__(dataset_ref, trlabel, slice)
 		self.clust = treelet_clust(dataset_ref, kernel, slice, 0, all_kernel)
 		self.trlabel = trlabel
-		self.CLM = CLM  # prediction = CLM(training_set, training_label, slice=range(len(training_set)))(test_data)
+		self.CLM = CLM  # prediction = CLM(training_set, training_label, slice).predict(test_data)
 		if self.purity_cut(majority_edge):
 			raise ValueError
 
