@@ -40,7 +40,7 @@ class treelet_classifier(classifier):
 		reject_list = [False] * self.size
 		clusters = {x:[x] for x in range(self.size)}
 		errorlist = [0] * self.size
-		self.clusterwise_CLM = {x : MajorityVote(self.dataset_ref, self.trlabel, slice=[slice[x]]) for x in range(self.size)}
+		self.clusterwise_CLM = {x : MajorityVote(self.dataset_ref, self.trlabel, slice=[self.slice[x]]) for x in range(self.size)}
 		for tup in self.cltree:
 			if reject_list[tup[0]]:
 				continue
