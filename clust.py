@@ -25,15 +25,20 @@ class clust:
 		for i in self.clusters:
 			print(i, self.clusters[i])
 
-	def input_slice (self, slice):
+	def input_slice (self, slice, out=False):
 		if slice is False:
-			self.size = len(self.dataset_ref)
-			self.slice = range(self.size)
+			size = len(self.dataset_ref)
+			slice = range(self.size)
 		elif type(slice) is int:
-			self.size = slice
-			self.slice = range(slice)
+			size = slice
+			slice = range(slice)
 		else:
-			self.size = len(slice)
+			size = len(slice)
+			slice = slice
+		if out:
+			return size, slice
+		else:
+			self.size = size
 			self.slice = slice
 
 	def __len__ (self):
