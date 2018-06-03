@@ -9,7 +9,7 @@ class MajorityVote(classifier):
 	def build (self):
 		super().build()
 		cnt = Counter()
-		for i in slice:
+		for i in self.slice:
 			cnt[self.trlabel[i]] += 1
 		temp = cnt.most_common(1)[0]
 		self.labels = temp[0]
@@ -37,7 +37,8 @@ class treelet_classifier(classifier):
 		self.cltree = trl.tree()
 		rjlist = [False] * self.size
 		clusters = {x:[x] for x in range(self.size)}
-		weightlist = [0] * self.size
+		errorlist = [0] * self.size
+		self.cluster_pred = {x : MajorityVote(self.dataset_ref, self.trlabel, slice=[slice[x]]) for x in range(self.size)}
 		for tup in self.cltree:
 			if rjlist[tup[0]]:
 				continue
@@ -51,10 +52,12 @@ class treelet_classifier(classifier):
 			trCLM.build()
 			trerr = trCLM.training_error()
 			newweight = trerr - 1 / (len_0 + len_1)
-			if weightlist[tup[1]] + weightlist[tup[0]] <= newweight:
+			if errorlist[tup[1]] + errorlist[tup[0]] <= newweight:
 				clusters[tup[0]] = comb_data
+				self.cluster_pred[tup[0]] = trCLM
 				del clusters[tup[1]]
-				weightlist[tup[0]] = newweight
+				del self.cluster_pred[tup[1]]
+				errorlist[tup[0]] = newweight
 			else:
 				rjlist[tup[0]] = True
 		self.clusters = {[slice[j] for j in clusters[i]] for i in clusters}
@@ -62,8 +65,10 @@ class treelet_classifier(classifier):
 
 	def predict (self, test_data):
 		super().predict(test_data)
+		cl = self.assign(test_data)
+		return self.cluster_pred[cl]
 
-	def predict_multiple (self, test_dataset, clust_info=False):
+	def predict_multiple (self, test_dataset, slice=False):
 		test_label = [None for i in test_dataset]
 		cluster_assignment = [self.assign(each_data) for each_data in test_dataset]
 		cluster_tsdata = dict.fromkeys(set(cluster_assignment), [])
