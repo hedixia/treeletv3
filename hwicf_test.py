@@ -1,6 +1,7 @@
 import treelet
 from treelet_clust import treelet_clust
 from treelet_classifier import treelet_classifier
+from Dataset import Dataset
 import numpy as np
 import csv 
 import os 
@@ -43,6 +44,7 @@ for i in range(10):
 		reader = csv.reader(csvfile)
 		temp = [[int(j) for j in i] for i in reader] 
 	trL += random.sample(temp, trdataextract[i])
+trL = Dataset(trL)
 
 tsL = []
 for i in range(10):
@@ -52,7 +54,8 @@ for i in range(10):
 		reader = csv.reader(csvfile)
 		temp = [[int(j) for j in i] for i in reader] 
 	tsL += random.sample(temp, tsdataextract[i])
-	
+tsL = Dataset(tsL)
+
 """
 #majority vote
 def CLM(training_set, training_label, test_data):
@@ -72,11 +75,12 @@ def CLM(training_set, training_label, test_data):
 	return clf.predict(np.array(test_data))
 """
 
-trL = np.matrix(trL)
 trcl = treelet_classifier(trL, kernel("ra", [coi]), labeling(trdataextract))
 print("start: build")
 trcl.build()
 print("start: predict")
 L = trcl.predict_multiple(tsL)
 realL = labeling(tsdataextract)
+print(L)
+print(realL)
 print(np.mean(np.array(L) == np.array(realL)))

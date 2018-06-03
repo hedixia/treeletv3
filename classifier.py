@@ -17,8 +17,8 @@ class classifier(clust):
 		return self.trlabel[0]
 
 	def predict_multiple (self, test_dataset, slice=False):
-		temp = clust(slice=slice)
-		return {x:self.predict(test_dataset[x]) for x in temp.slice}
+		size, slice = self.input_slice(slice)
+		return {x:self.predict(test_dataset[x]) for x in slice}
 
 	def training_error (self):
 		return self.trerr
