@@ -63,7 +63,7 @@ class treelet_classifier(classifier):
 				reject_list[tup[0]] = True
 		self.clusters = {i:[self.slice[j] for j in clusters[i]] for i in clusters}
 		self._c2l()
-		self.trerr = sum(self.slice)
+		self.trerr = sum([self.clusterwise_CLM[i].size * self.clusterwise_CLM[i].training_error() for i in self.slice]) / self.size
 
 	def predict (self, test_data):
 		super().predict(test_data)
