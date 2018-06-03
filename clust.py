@@ -28,7 +28,7 @@ class clust:
 	def input_slice (self, slice, out=False):
 		if slice is False:
 			size = len(self.dataset_ref)
-			slice = range(self.size)
+			slice = range(size)
 		elif type(slice) is int:
 			size = slice
 			slice = range(slice)
