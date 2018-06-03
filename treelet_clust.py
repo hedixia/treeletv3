@@ -12,8 +12,8 @@ class treelet_clust(clust):
 			temp_slice = np.array(self.slice, dtype=np.intp)
 			self.A = all_kernel[temp_slice[:, np.newaxis], temp_slice]
 		else:
-			self.A = np.array(
-				[[self.kernel(self.dataset_ref[i], self.dataset_ref[j]) for i in self.slice] for j in self.slice])
+			temp_f = lambda i,j : self.kernel(self.dataset_ref[i], self.dataset_ref[j])
+			self.A = np.vectorize(temp_f)(*np.meshgrid(self.slice, self.slice, sparse=True))
 
 	def build (self):
 		if self.size is 0:
