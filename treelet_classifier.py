@@ -61,7 +61,7 @@ class treelet_classifier(classifier):
 				errorlist[tup[0]] = new_error_rate
 			else:
 				reject_list[tup[0]] = True
-		self.clusters = {[slice[j] for j in clusters[i]] for i in clusters}
+		self.clusters = {i:[self.slice[j] for j in clusters[i]] for i in clusters}
 		self._c2l()
 
 	def predict (self, test_data):
