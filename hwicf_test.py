@@ -14,18 +14,6 @@ datadir = r"C:\D\senior_thesis\handwritten_num\samples\comp20data"
 trdataextract = {i:100 for i in range(10)}
 tsdataextract = {i:1000 for i in range(10)}
 coi = 1
-
-def purity (dictlist):
-	sum = 0
-	totalmaxsum = 0
-	for k in dictlist:
-		max = 0 
-		for i in dictlist[k]:
-			sum += i 
-			if i > max:
-				max = i 
-		totalmaxsum += max 
-	return totalmaxsum / sum 
 	
 def labeling (idict):
 	L = []
