@@ -11,8 +11,8 @@ import matplotlib.pyplot as plt
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 datadir = r"C:\D\senior_thesis\handwritten_num\samples\comp20data"
-trdataextract = {0:100, 1:100, 2:100, 3:100, 4:100, 5:100, 6:100, 7:100, 8:100, 9:100}
-tsdataextract = {0:100, 1:100, 2:100, 3:100, 4:100, 5:100, 6:100, 7:100, 8:100, 9:100}
+trdataextract = {i:100 for i in range(10)}
+tsdataextract = {i:1000 for i in range(10)}
 coi = 1
 
 def purity (dictlist):
@@ -32,8 +32,7 @@ def labeling (idict):
 	for i in range(10):
 		if i not in idict:
 			continue
-		for j in range(idict[i]):
-			L.append(i)
+		L += [i] * idict[i]
 	return L
 
 trL = []
@@ -83,4 +82,5 @@ L = trcl.predict_multiple(tsL)
 realL = labeling(tsdataextract)
 print(L)
 print(realL)
-print(np.mean(np.array(L) == np.array(realL)))
+print(trcl.training_error())
+print(sum([L[i] == realL[i] for i in range(len(tsL))]) / len(tsL))

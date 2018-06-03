@@ -41,6 +41,8 @@ class treelet_classifier(classifier):
 		clusters = {x:[x] for x in range(self.size)}
 		errorlist = [0] * self.size
 		self.clusterwise_CLM = {x : MajorityVote(self.dataset_ref, self.trlabel, slice=[self.slice[x]]) for x in range(self.size)}
+		for i in range(self.size):
+			self.clusterwise_CLM[i].build()
 		for tup in self.cltree:
 			if reject_list[tup[0]]:
 				continue
@@ -63,7 +65,7 @@ class treelet_classifier(classifier):
 				reject_list[tup[0]] = True
 		self.clusters = {i:[self.slice[j] for j in clusters[i]] for i in clusters}
 		self._c2l()
-		self.trerr = sum([self.clusterwise_CLM[i].size * self.clusterwise_CLM[i].training_error() for i in self.slice]) / self.size
+		self.trerr = sum([self.clusterwise_CLM[i].size * self.clusterwise_CLM[i].training_error() for i in self.clusterwise_CLM]) / self.size
 
 	def predict (self, test_data):
 		super().predict(test_data)
@@ -71,7 +73,7 @@ class treelet_classifier(classifier):
 		return self.clusterwise_CLM[cl].predict(test_data)
 
 	def assign (self, data):
-		linkf = lambda x:self.kernel(self.dataset_ref[x], data)
+		linkf = lambda x:self.clust.kernel(self.dataset_ref[x], data)
 		closest = max(self.slice, key=linkf)
 		return self.labels[closest]
 
