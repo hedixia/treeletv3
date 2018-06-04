@@ -1,9 +1,12 @@
-import numpy as np 
+import numpy as np
+
 
 class Dataset:
 	def __init__ (self, matrix=[]):
 		self.M = np.matrix(matrix)
 		self.n = len(matrix)
+		self.mean = None
+		self.var = None
 
 	def __len__ (self):
 		return self.n
@@ -17,3 +20,18 @@ class Dataset:
 	def getT (self):
 		return Dataset(self.M.getT())
 
+	def get_mean_array (self):
+		if self.mean is None:
+			self.mean = np.mean(self.M, axis=0)
+		return self.mean
+
+	def get_mean (self):
+		return mean(self.get_mean_array())
+
+	def get_var_array (self):
+		if self.var is None:
+			self.var = np.var(self.M, axis=0)
+		return self.var
+
+	def get_var (self):
+		return sum(self.get_var_array())
