@@ -2,6 +2,8 @@ import csv
 import os
 import random
 
+import numpy as np
+
 from Dataset import Dataset
 from kernel import kernel
 from treelet_classifier import treelet_classifier
@@ -9,7 +11,7 @@ from treelet_classifier import treelet_classifier
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 datadir = r"C:\D\senior_thesis\handwritten_num\samples\comp20data"
 trdataextract = {i:100 for i in range(10)}
-tsdataextract = {i:100 for i in range(10)}
+tsdataextract = {i:1000 for i in range(10)}
 	
 def labeling (idict):
 	L = []
@@ -50,7 +52,7 @@ def CLM(training_set, training_label, test_data):
 """
 variance = trL.get_var()
 print("variance =", variance)
-trcl = treelet_classifier(trL, kernel("ra", [variance]), labeling(trdataextract))
+trcl = treelet_classifier(trL, kernel("ra", [np.sqrt(variance)]), labeling(trdataextract))
 print("start: build")
 trcl.build()
 print("start: predict")

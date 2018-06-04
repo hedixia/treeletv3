@@ -22,7 +22,7 @@ class Dataset:
 
 	def get_mean_array (self):
 		if self.mean is None:
-			self.mean = np.mean(self.M, axis=0)
+			self.mean = np.mean(self.M, axis=0).tolist()[0]
 		return self.mean
 
 	def get_mean (self):
@@ -30,7 +30,7 @@ class Dataset:
 
 	def get_var_array (self):
 		if self.var is None:
-			self.var = np.var(self.M, axis=0)
+			self.var = np.var(self.M, axis=0).tolist()[0]
 		return self.var
 
 	def get_var (self):
