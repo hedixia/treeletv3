@@ -1,6 +1,8 @@
-from classifier import classifier
-from sklearn import svm
 import numpy as np
+from sklearn import svm
+
+from classifier import classifier
+
 
 class MajorityVote(classifier):
 	def build (self):
