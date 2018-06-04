@@ -21,6 +21,7 @@ def labeling (idict):
 		L += [i] * idict[i]
 	return L
 
+#fetch training data
 trL = []
 for i in range(10):
 	if i not in trdataextract:
@@ -31,6 +32,7 @@ for i in range(10):
 	trL += random.sample(temp, trdataextract[i])
 trL = Dataset(trL)
 
+#fetch test data
 tsL = []
 for i in range(10):
 	if i not in tsdataextract:
@@ -41,15 +43,7 @@ for i in range(10):
 	tsL += random.sample(temp, tsdataextract[i])
 tsL = Dataset(tsL)
 
-"""
-#SVM
-def CLM(training_set, training_label, test_data):
-	if len(set(training_label)) == 1:
-		return [training_label[0] for i in test_data]
-	clf = svm.SVC(decision_function_shape='ovo')
-	clf.fit(training_set, training_label)
-	return clf.predict(np.array(test_data))
-"""
+#computation
 variance = trL.get_var()
 print("variance =", variance)
 trcl = treelet_classifier(trL, kernel("ra", [np.sqrt(variance)]), labeling(trdataextract))
