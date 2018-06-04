@@ -1,14 +1,9 @@
-import treelet
-from Dataset import Dataset
-from treelet_clust import treelet_clust
-from SA_method import SA_clust
-from SA2_method import SA2_clust
-import numpy as np
-import csv
 import os
+
+from Dataset import Dataset
+from SA2_method import SA2_clust
+from SA_method import SA_clust
 from kernel import kernel
-import random
-import matplotlib.pyplot as plt
 
 os.chdir(os.path.dirname(__file__))
 

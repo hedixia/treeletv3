@@ -1,6 +1,7 @@
+from random import sample
+
 from clust import clust
 from treelet_clust import treelet_clust
-from random import sample
 
 
 class SA_clust(clust):

@@ -1,6 +1,7 @@
 import numpy as np
-from treelet import treelet
+
 from clust import clust
+from treelet import treelet
 
 
 class treelet_clust(clust):

@@ -1,13 +1,10 @@
-import treelet
-from treelet_clust import treelet_clust
-from treelet_classifier import treelet_classifier
+import csv
+import os
+import random
+
 from Dataset import Dataset
-import numpy as np
-import csv 
-import os 
-from kernel import kernel 
-import random 
-import matplotlib.pyplot as plt
+from kernel import kernel
+from treelet_classifier import treelet_classifier
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 datadir = r"C:\D\senior_thesis\handwritten_num\samples\comp20data"

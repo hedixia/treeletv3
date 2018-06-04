@@ -1,8 +1,8 @@
-import numpy as np
 from collections import Counter
+
+from classifier import classifier
 from treelet import treelet
 from treelet_clust import treelet_clust
-from classifier import classifier
 
 
 class MajorityVote(classifier):
