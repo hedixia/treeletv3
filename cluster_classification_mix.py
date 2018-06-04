@@ -8,14 +8,16 @@ class cluster_classification_mix (classifier):
 	              ):
 		super().__init__(dataset_ref, trlabel, slice)
 		self.clust = Clust_method
+		self.classify_class = Classify_class
+
+	def build(self):
+		super().build()
 		try:
 			self.clust.build()
 		except RebuildError:
 			pass
-		self.classify_class = Classify_class
-
-	def build(self):
-		pass
+		for one_cluster in self.clust.clusters:
+			clust_slice = self.clust.clusters[one_cluster]
 
 	def predict (self):
 		pass
