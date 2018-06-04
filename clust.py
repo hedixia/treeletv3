@@ -1,12 +1,19 @@
 import numpy as np
 
+class RebuildError (exception):
+	pass
 
 class clust:
 	def __init__ (self, dataset_ref=[], slice=False):
 		self.dataset_ref = dataset_ref
 		self.input_slice(slice)
+		self.been_built = False
 
 	def build (self):
+		if self.been_built:
+			raise RebuildError
+		else:
+			self.been_built = True
 		self.labels = {}
 		self.clusters = {}
 
