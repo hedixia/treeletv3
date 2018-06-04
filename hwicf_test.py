@@ -41,15 +41,6 @@ for i in range(10):
 tsL = Dataset(tsL)
 
 """
-#majority vote
-def CLM(training_set, training_label, test_data):
-	lkey = list(set(training_label))
-	lval = [training_label.count(i) for i in lkey]
-	temp = lkey[lval.index(max(lval))]
-	return [temp for i in test_data]
-"""
-
-"""
 #SVM
 def CLM(training_set, training_label, test_data):
 	if len(set(training_label)) == 1:

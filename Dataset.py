@@ -26,7 +26,7 @@ class Dataset:
 		return self.mean
 
 	def get_mean (self):
-		return mean(self.get_mean_array())
+		return np.mean(self.get_mean_array())
 
 	def get_var_array (self):
 		if self.var is None:
