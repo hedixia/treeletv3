@@ -4,7 +4,7 @@ from sklearn import svm
 from classifier import classifier
 
 
-class SVM (classifier):
+class SVM(classifier):
 	def build (self):
 		super().build()
 		self.clf = svm.SVC(decision_function_shape='ovo')
@@ -16,4 +16,3 @@ class SVM (classifier):
 
 	def predict (self, test_data):
 		return self.clf.predict([test_data])[0]
-
