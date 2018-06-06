@@ -26,14 +26,15 @@ class MajorityVote(classifier):
 class treelet_classifier(classifier):
 	def __init__ (self, dataset_ref, kernel, trlabel, slice=False, CLM=MajorityVote, all_kernel=False, majority_edge=1):
 		super().__init__(dataset_ref, trlabel, slice)
-		self.clust = treelet_clust(dataset_ref, kernel, slice, 0, all_kernel)
-		self.trlabel = trlabel
+		self.kernel = kernel
 		self.CLM = CLM  # prediction = CLM(training_set, training_label, slice).predict(test_data)
+		self.all_kernel = all_kernel
 		if self.purity_cut(majority_edge):
 			raise ValueError
 
 	def build (self):
 		super().build()
+		self.clust = treelet_clust(self.dataset_ref, self.kernel, self.slice, 1, self.all_kernel)
 		trl = treelet(self.clust.A, self.clust.psi)
 		trl.fullrotate()
 		self.cltree = trl.tree()

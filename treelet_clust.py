@@ -5,7 +5,7 @@ from treelet import treelet
 
 
 class treelet_clust(clust):
-	def __init__ (self, dataset_ref, kernel, slice=False, num_clust=0, all_kernel=False):
+	def __init__ (self, dataset_ref, kernel, slice=False, num_clust=1, all_kernel=False):
 		super().__init__(dataset_ref, slice)
 		self.kernel = kernel
 		if num_clust < 1:
