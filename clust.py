@@ -64,3 +64,7 @@ class clust:
 
 	def psi (self, x, y, z):
 		return np.abs(x) / np.sqrt(np.abs(y * z))
+
+	def assign (self, data):
+		#This function may not be necessarily implemented
+		raise NotImplementedError

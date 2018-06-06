@@ -12,7 +12,7 @@ from cluster_classification_mix import cluster_classification_mix
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 datadir = r"C:\D\senior_thesis\handwritten_num\samples\comp20data"
-trdataextract = {i:200 for i in range(10)}
+trdataextract = {i:100 for i in range(10)}
 tsdataextract = {i:100 for i in range(10)}
 	
 def labeling (idict):

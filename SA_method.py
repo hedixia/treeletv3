@@ -38,3 +38,5 @@ class SA_clust(clust):
 		w = self.dataset_ref[w]
 		return self.kernel(v, w)
 
+	def assign (self, data):
+		return self.trcl.assign(data)

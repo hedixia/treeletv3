@@ -39,6 +39,11 @@ class treelet_clust(clust):
 		self.labels = dict(zip(self.slice, temp_labels))
 		self._l2c()
 
+	def assign (self, data):
+		linkf = lambda x:self.kernel(self.dataset_ref[x], data)
+		closest = max(self.slice, key=linkf)
+		return self.labels[closest]
+
 
 """
 tc = treelet_clust(dat, ker, slice, num_clust)
