@@ -8,6 +8,8 @@ class treelet_clust(clust):
 	def __init__ (self, dataset_ref, kernel, slice=False, num_clust=0, all_kernel=False):
 		super().__init__(dataset_ref, slice)
 		self.kernel = kernel
+		if num_clust < 1:
+			raise ValueError
 		self.num_clust = num_clust
 		if all_kernel:
 			temp_slice = np.array(self.slice, dtype=np.intp)

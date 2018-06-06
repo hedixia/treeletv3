@@ -24,7 +24,9 @@ class classifier(clust):
 	def training_error (self):
 		return self.trerr
 
-	def down_cast (self, subclass_name, **kwargs):
+	def down_cast (self, subclass_name, args, **kwargs):
 		self.__class__ = subclass_name
+		for key in args:
+			setattr(self, key, args[key])
 		for key in kwargs:
 			setattr(self, key, kwargs[key])

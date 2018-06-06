@@ -10,6 +10,7 @@ class cluster_classification_mix (classifier):
 		super().__init__(dataset_ref, trlabel, slice)
 		self.clust = Clust_method
 		self.classify_class = Classify_class
+		self.Classify_class_kwargs = Classify_class_kwargs
 
 	def build(self):
 		super().build()
@@ -21,7 +22,7 @@ class cluster_classification_mix (classifier):
 		for one_cluster in self.clust.clusters:
 			clust_slice = self.clust.clusters[one_cluster]
 			self.clusterwise_CLM[one_cluster] = classifier(self.dataset_ref, self.trlabel, clust_slice)
-			self.clusterwise_CLM[one_cluster].down_cast(self.classify_class, self.classify_class)
+			self.clusterwise_CLM[one_cluster].down_cast(self.classify_class, self.Classify_class_kwargs)
 			self.clusterwise_CLM[one_cluster].build()
 		self.trerr = sum([self.clusterwise_CLM[i].size * self.clusterwise_CLM[i].training_error() for i in self.clusterwise_CLM]) / self.size
 
