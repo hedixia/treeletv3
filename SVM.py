@@ -4,7 +4,7 @@ from sklearn import svm
 from classifier import classifier
 
 
-class MajorityVote(classifier):
+class SVM (classifier):
 	def build (self):
 		super().build()
 		self.clf = svm.SVC(decision_function_shape='ovo')

@@ -9,6 +9,7 @@ from kernel import kernel
 from treelet_classifier import treelet_classifier, MajorityVote
 from SA2_method import SA2_clust
 from cluster_classification_mix import cluster_classification_mix
+from SVM import SVM
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 datadir = r"C:\D\senior_thesis\handwritten_num\samples\comp20data"
@@ -53,11 +54,8 @@ variance = trL.get_var()
 print("variance =", variance)
 ker = kernel("ra", [np.sqrt(variance)])
 sacl = SA2_clust(trL, ker, sample_para=300, inner_sample_para=10, num_clust=10)
-cfc = treelet_classifier
-cck = {"kernel" : ker,
-       "CLM" : MajorityVote,
-       "all_kernel" : False
-       }
+cfc = SVM
+cck = {}
 trcl = cluster_classification_mix(trL, trlab, Clust_method=sacl, Classify_class=cfc, Classify_class_kwargs=cck)
 print("start: build")
 trcl.build()
