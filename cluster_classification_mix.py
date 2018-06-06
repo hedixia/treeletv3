@@ -5,7 +5,7 @@ class cluster_classification_mix (classifier):
 	def __init__ (self, dataset_ref, trlabel, slice=False,
 	              Clust_method=None, #a clustering method instance
 	              Classify_class=None, #a classification method class
-	              Classify_class_kwargs=[] #arguments for classifier class
+	              Classify_class_kwargs={} #arguments for classifier class
 	              ):
 		super().__init__(dataset_ref, trlabel, slice)
 		self.clust = Clust_method

@@ -1,6 +1,6 @@
 import numpy as np
 
-class RebuildError (exception):
+class RebuildError (Exception):
 	pass
 
 class clust:

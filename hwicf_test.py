@@ -6,11 +6,13 @@ import numpy as np
 
 from Dataset import Dataset
 from kernel import kernel
-from treelet_classifier import treelet_classifier
+from treelet_classifier import treelet_classifier, MajorityVote
+from SA2_method import SA2_clust
+from cluster_classification_mix import cluster_classification_mix
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 datadir = r"C:\D\senior_thesis\handwritten_num\samples\comp20data"
-trdataextract = {i:100 for i in range(10)}
+trdataextract = {i:1000 for i in range(10)}
 tsdataextract = {i:1000 for i in range(10)}
 	
 def labeling (idict):
@@ -43,16 +45,21 @@ for i in range(10):
 	tsL += random.sample(temp, tsdataextract[i])
 tsL = Dataset(tsL)
 
+trlab = labeling(trdataextract)
+tslab = labeling(tsdataextract)
+
 #computation
 variance = trL.get_var()
 print("variance =", variance)
-trcl = treelet_classifier(trL, kernel("ra", [np.sqrt(variance)]), labeling(trdataextract))
+ker = kernel("ra", [np.sqrt(variance)])
+sacl = SA2_clust(trL, ker, 300, 10, 100)
+trcl = cluster_classification_mix(trL, trlab, Clust_method=sacl, Classify_class=MajorityVote)
 print("start: build")
 trcl.build()
 print("start: predict")
 L = trcl.predict_multiple(tsL)
-realL = labeling(tsdataextract)
+
 print(L)
-print(realL)
+print(tslab)
 print(trcl.training_error())
-print(sum([L[i] == realL[i] for i in range(len(tsL))]) / len(tsL))
+print(sum([L[i] == tslab[i] for i in range(len(tsL))]) / len(tsL))
