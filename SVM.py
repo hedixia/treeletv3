@@ -8,8 +8,9 @@ class SVM(classifier):
 	def build (self):
 		super().build()
 		self.clf = svm.SVC(decision_function_shape='ovo')
-		temp_dat = [self.dataset_ref[i] for i in self.slice]
+		temp_dat = [self.dataset_ref[i].tolist()[0] for i in self.slice]
 		temp_lab = [self.trlabel[i] for i in self.slice]
+		print(temp_dat)
 		self.clf.fit(temp_dat, temp_lab)
 		temp_trn = self.clf.predict(temp_dat)
 		self.trerr = np.mean(np.array(temp_lab) == temp_trn)
