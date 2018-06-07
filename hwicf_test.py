@@ -13,7 +13,7 @@ from SVM import SVM
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 datadir = r"C:\D\senior_thesis\handwritten_num\samples\comp20data"
-trdataextract = {i:300 for i in range(10)}
+trdataextract = {i:1000 for i in range(10)}
 tsdataextract = {i:100 for i in range(10)}
 	
 def labeling (idict):
@@ -53,7 +53,7 @@ tslab = labeling(tsdataextract)
 variance = trL.get_var()
 print("variance =", variance)
 ker = kernel("ra", [np.sqrt(variance)])
-sacl = SA2_clust(trL, ker, sample_para=300, inner_sample_para=10, num_clust=10)
+sacl = SA2_clust(trL, ker, sample_para=300, inner_sample_para=10, num_clust=20)
 cfc = SVM
 cck = {}
 trcl = cluster_classification_mix(trL, trlab, Clust_method=sacl, Classify_class=cfc, Classify_class_kwargs=cck)
