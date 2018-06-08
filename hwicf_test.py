@@ -42,7 +42,7 @@ tsL = []
 for i in range(10):
 	if i not in tsdataextract:
 		continue
-	with open(datadir + r"\train_label_" + str(i) + ".csv") as csvfile:
+	with open(datadir + r"\test_label_" + str(i) + ".csv") as csvfile:
 		reader = csv.reader(csvfile)
 		temp = [[int(j) for j in i] for i in reader] 
 	tsL += random.sample(temp, tsdataextract[i])
