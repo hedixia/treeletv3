@@ -13,7 +13,7 @@ from SVM import SVM
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 datadir = r"C:\D\senior_thesis\handwritten_num\samples\comp20data"
-trdataextract = {i:1000 for i in range(10)}
+trdataextract = {i:100 for i in range(10)}
 tsdataextract = {i:100 for i in range(10)}
 	
 def labeling (idict):
@@ -25,15 +25,17 @@ def labeling (idict):
 	return L
 
 #fetch training data
-trL = []
+trLs = [[] for i in range(10)]
 for i in range(10):
 	if i not in trdataextract:
 		continue
 	with open(datadir + r"\train_label_" + str(i) + ".csv") as csvfile:
 		reader = csv.reader(csvfile)
-		temp = [[int(j) for j in i] for i in reader] 
-	trL += random.sample(temp, trdataextract[i])
-trL = Dataset(trL)
+		temp = [[int(j) for j in i] for i in reader]
+	for trL in trLs:
+		trL += random.sample(temp, trdataextract[i])
+trLs = [Dataset(trL) for trL in trLs]
+del trL
 
 #fetch test data
 tsL = []
@@ -50,19 +52,34 @@ trlab = labeling(trdataextract)
 tslab = labeling(tsdataextract)
 
 #computation
-variance = trL.get_var()
+variance = [trL.get_var() for trL in trLs]
 print("variance =", variance)
-ker = kernel("ra", [np.sqrt(variance)])
+ker = kernel("ra", [1])
+"""
 sacl = SA2_clust(trL, ker, sample_para=300, inner_sample_para=10, num_clust=20)
-cfc = SVM
-cck = {}
+cfc = treelet_classifier
+cck = {"kernel":ker, "CLM":MajorityVote, "all_kernel":False}
 trcl = cluster_classification_mix(trL, trlab, Clust_method=sacl, Classify_class=cfc, Classify_class_kwargs=cck)
 print("start: build")
 trcl.build()
 print("start: predict")
 L = trcl.predict_multiple(tsL)
+"""
 
-print(L)
-print(tslab)
-print(trcl.training_error())
-print(sum([L[i] == tslab[i] for i in range(len(tsL))]) / len(tsL))
+Ls = []
+for trL in trLs:
+	trc = treelet_classifier(trL, ker, trlab)
+	trc.build()
+	Ls.append(trc.predict_multiple(tsL))
+
+rL = {}
+for i in set(Ls[0]):
+	lst = [L[i] for L in Ls]
+	rL[i] = max(set(lst), key=lst.count)
+
+print(trc.training_error())
+print(sum([rL[i] == tslab[i] for i in range(len(tsL))]) / len(tsL))
+temp = np.zeros((10,10))
+for i in rL:
+	temp[rL[i]][tslab[i]] += 1
+print(temp)

@@ -14,6 +14,8 @@ class kernel:
 		return name
 
 	def __call__ (self, x, y):
+		x = np.asarray(x).flatten()
+		y = np.asarray(y).flatten()
 		if self.name == "poly":
 			# $K(x,y) = (x^Ty+c)^\delta$ where $parameters = [c,\delta]$
 			c = self.parameters[0]

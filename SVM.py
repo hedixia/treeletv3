@@ -10,6 +10,7 @@ class SVM(classifier):
 		temp_lab = [self.trlabel[i] for i in self.slice]
 		if len(set(temp_lab)) is 1:
 			self.val = temp_lab[0]
+			self.trerr = 0
 			self.degenerate = True
 		else:
 			temp_dat = self.dataset_ref[self.slice]
