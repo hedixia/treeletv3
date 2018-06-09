@@ -1,10 +1,13 @@
 from classifier import classifier
-class KNN (classifier):
-	def __init__(self, dataset_ref=[], trlabel=[], slice=False, measure=lambda x,y : 1, K=0):
+
+
+class KNN(classifier):
+	def __init__ (self, dataset_ref=[], trlabel=[], slice=False,
+	              measure=lambda x, y:1, K=0):
 		super().__init__(dataset_ref, slice)
 		self.K = K
 
-	def build(self):
+	def build (self):
 		super().build()
 		if self.K is not 0:
 			Tval = 0
@@ -16,8 +19,7 @@ class KNN (classifier):
 					Fval += 1
 			self.trerr = Tval / (Tval + Fval)
 		else:
-			pass #Cross Validation to select K
-
+			pass  # Cross Validation to select K
 
 	def predict (self, test_data):
 		MTD = {x:self.measure(self.dataset_ref[x], test_data) for x in self.slice}
