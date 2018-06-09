@@ -5,7 +5,7 @@ class classifier(clust):
 	def __init__ (self, dataset_ref=[], trlabel=[], slice=False):
 		super().__init__(dataset_ref, slice)
 		self.trlabel = trlabel
-		self.trerr = None
+		self.true_ratio = None
 
 	def build (self):
 		super().build()
@@ -22,7 +22,7 @@ class classifier(clust):
 		return {x:self.predict(test_dataset[x]) for x in temp.slice}
 
 	def training_error (self):
-		return self.trerr
+		return 1 - self.true_ratio
 
 	def down_cast (self, subclass_name, args, **kwargs):
 		self.__class__ = subclass_name

@@ -24,7 +24,7 @@ class cluster_classification_mix (classifier):
 			self.clusterwise_CLM[one_cluster] = classifier(self.dataset_ref, self.trlabel, clust_slice)
 			self.clusterwise_CLM[one_cluster].down_cast(self.classify_class, self.Classify_class_kwargs)
 			self.clusterwise_CLM[one_cluster].build()
-		self.trerr = sum([self.clusterwise_CLM[i].size * self.clusterwise_CLM[i].training_error() for i in self.clusterwise_CLM]) / self.size
+		self.true_ratio = 1 - sum([self.clusterwise_CLM[i].size * self.clusterwise_CLM[i].training_error() for i in self.clusterwise_CLM]) / self.size
 
 	def predict (self, test_data):
 		clust = self.clust.assign(test_data)

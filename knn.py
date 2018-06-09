@@ -17,7 +17,7 @@ class KNN(classifier):
 					Tval += 1
 				else:
 					Fval += 1
-			self.trerr = Tval / (Tval + Fval)
+			self.true_ratio = Tval / (Tval + Fval)
 		else:
 			pass  # Cross Validation to select K
 
