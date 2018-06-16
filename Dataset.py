@@ -2,11 +2,13 @@ import numpy as np
 
 
 class Dataset:
-	def __init__ (self, matrix=[]):
+	def __init__ (self, matrix=[], **kwargs):
 		self.M = np.matrix(matrix)
 		self.n = len(matrix)
 		self.mean = None
 		self.var = None
+		for key, value in kwargs.items():
+			setattr(self, key, value)
 
 	def __len__ (self):
 		return self.n
