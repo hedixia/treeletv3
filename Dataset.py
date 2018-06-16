@@ -2,11 +2,12 @@ import numpy as np
 
 
 class Dataset:
-	def __init__ (self, matrix=[], **kwargs):
+	def __init__ (self, matrix=[], label=[], **kwargs):
 		self.M = np.matrix(matrix)
 		self.n = len(matrix)
 		self.mean = None
 		self.var = None
+		self.label = label
 		for key, value in kwargs.items():
 			setattr(self, key, value)
 
@@ -16,8 +17,17 @@ class Dataset:
 	def __getitem__ (self, item):
 		return self.M[item, :]
 
-	def __add__ (self, other):
-		return Dataset(np.concatenate((self.M, other.M), axis=0))
+	def l (self, item):
+		return self.label[item]
+
+	def __add__ (self, other, otherlabel=[]):
+		return Dataset(np.vstack([self.M, other.M]), self.label + otherlabel)
+
+	def getSlice (self, slice):
+		if len(self.label) is 0:
+			return Dataset(self.M[slice:])
+		else:
+			return Dataset(self.M[slice:], [self.label[i] for i in slice])
 
 	def getT (self):
 		return Dataset(self.M.getT())

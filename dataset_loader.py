@@ -12,23 +12,40 @@ class loadDataset(Dataset):
 		:param filenames: filenames of datasets
 		:param kwargs: keywords
 			datatype: datatype of the imported data
+			labcol: the column of the label, if not applicable, set to None
 		"""
 		super().__init__(self, **kwargs)
 		self.datadir = datadir
 		self.filenames = [filenames] if type(filenames) is str else filenames
 		for filename in self.filenames:
 			self.load(filename)
+		self.label = []
 
 	def load (self, filename):
-		try:
-			datatype = self.datatype
-		except AttributeError:
-			datatype = float
 		csvfile = open(self.datadir + filename)
 		newdata = np.matrix(csv.reader(csvfile))
-		newdata.astype(datatype, copy=True)
+		newdata.astype(self.DataType, copy=True)
+		if self.LabelColumn is not None:
+			self.label.append(newdata[:,i])
+			newdata = np.delete(newdata, i, axis=1)
 		if len(y) is 0:
 			self.M = newdata
 		else:
 			self.M = np.vstack([self.M, newdata])
 		self.n += len(newdata)
+
+	@property
+	def DataType (self):
+		try:
+			return self.datatype
+		except AttributeError:
+			self.datatype = float
+			return self.datatype
+
+	@property
+	def LabelColumn (self):
+		try:
+			return self.labcol
+		except AttributeError:
+			self.labcol = None
+			return self.labcol
