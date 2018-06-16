@@ -1,9 +1,11 @@
-from Dataset import Dataset
-
 import csv
+
 import numpy as np
 
-class loadDataset (Dataset):
+from Dataset import Dataset
+
+
+class loadDataset(Dataset):
 	def __init__ (self, datadir, filenames, **kwargs):
 		"""
 		:param datadir: directory of datasets
