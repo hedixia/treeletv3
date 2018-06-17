@@ -1,4 +1,3 @@
-import csv
 import os
 import random
 
@@ -14,7 +13,7 @@ from SVM import SVM
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 datadir = r"C:\D\senior_thesis\handwritten_num\samples\comp20data"
 iter_num = 3
-trdataextract = {i:10 for i in range(10)}
+trdataextract = {i:300 for i in range(10)}
 tsdataextract = {i:100 for i in range(10)}
 
 def labeling (idict):
@@ -30,12 +29,12 @@ trLs = [[] for i in range(iter_num)]
 for i in range(10):
 	if i not in trdataextract:
 		continue
-	with open(datadir + r"\train_label_" + str(i) + ".csv") as csvfile:
-		reader = csv.reader(csvfile)
-		temp = [[int(j) for j in i] for i in reader]
+	csvfile = np.genfromtxt(datadir + r"\train_label_" + str(i) + ".csv", delimiter=',')
+	temp = np.matrix(csvfile).astype(int)
 	for trL in trLs:
-		trL += random.sample(temp, trdataextract[i])
-trLs = [Dataset(trL) for trL in trLs]
+		tempsamp = random.sample(range(len(temp)), trdataextract[i])
+		trL.append(temp[tempsamp,:])
+trLs = [Dataset(np.vstack(trL)) for trL in trLs]
 del trL
 
 #fetch test data
@@ -43,17 +42,18 @@ tsL = []
 for i in range(10):
 	if i not in tsdataextract:
 		continue
-	with open(datadir + r"\test_label_" + str(i) + ".csv") as csvfile:
-		reader = csv.reader(csvfile)
-		temp = [[int(j) for j in i] for i in reader] 
-	tsL += random.sample(temp, tsdataextract[i])
-tsL = Dataset(tsL)
+	csvfile = np.genfromtxt(datadir + r"\test_label_" + str(i) + ".csv",
+	                        delimiter=',')
+	temp = np.matrix(csvfile).astype(int)
+	tempsamp = random.sample(range(len(temp)), tsdataextract[i])
+	tsL.append(temp[tempsamp, :])
+tsL = Dataset(np.vstack(tsL))
 
 trlab = labeling(trdataextract)
 tslab = labeling(tsdataextract)
 
 #computation
-variance = [trL.get_var() for trL in trLs]
+variance = [trL.Var for trL in trLs]
 print("variance =", variance)
 ker = kernel("ra", [1])
 """
