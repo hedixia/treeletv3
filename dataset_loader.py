@@ -21,10 +21,11 @@ class loadDataset(Dataset):
 
 	def load (self, filename):
 		csvfile = np.genfromtxt(self.datadir + filename, delimiter=',')
-		newdata = np.matrix(csvfile).astype(self.DataType)
+		newdata = np.matrix(csvfile)
 		if self.LabelColumn is not None:
 			self.label.append(newdata[:, i])
 			newdata = np.delete(newdata, i, axis=1)
+		newdata.astype(self.DataType, copy=False)
 		if len(y) is 0:
 			self.M = newdata
 		else:
