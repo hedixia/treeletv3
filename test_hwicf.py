@@ -16,6 +16,7 @@ iter_num = 3
 trdataextract = {i:300 for i in range(10)}
 tsdataextract = {i:100 for i in range(10)}
 
+
 def labeling (idict):
 	L = []
 	for i in range(10):
@@ -24,20 +25,22 @@ def labeling (idict):
 		L += [i] * idict[i]
 	return L
 
-#fetch training data
+
+# fetch training data
 trLs = [[] for i in range(iter_num)]
 for i in range(10):
 	if i not in trdataextract:
 		continue
-	csvfile = np.genfromtxt(datadir + r"\train_label_" + str(i) + ".csv", delimiter=',')
+	csvfile = np.genfromtxt(datadir + r"\train_label_" + str(i) + ".csv",
+	                        delimiter=',')
 	temp = np.matrix(csvfile).astype(int)
 	for trL in trLs:
 		tempsamp = random.sample(range(len(temp)), trdataextract[i])
-		trL.append(temp[tempsamp,:])
+		trL.append(temp[tempsamp, :])
 trLs = [Dataset(np.vstack(trL)) for trL in trLs]
 del trL
 
-#fetch test data
+# fetch test data
 tsL = []
 for i in range(10):
 	if i not in tsdataextract:
@@ -52,7 +55,7 @@ tsL = Dataset(np.vstack(tsL))
 trlab = labeling(trdataextract)
 tslab = labeling(tsdataextract)
 
-#computation
+# computation
 variance = [trL.Var for trL in trLs]
 print("variance =", variance)
 ker = kernel("ra", [1])
@@ -84,13 +87,13 @@ for i in set(Ls[0]):
 print(trc.training_error())
 cpt = sum([rL[i] == tslab[i] for i in range(len(tsL))]) / len(tsL)
 print(cpt)
-temp = np.zeros((10,10))
+temp = np.zeros((10, 10))
 for i in rL:
 	temp[rL[i]][tslab[i]] += 1
 print(temp)
 
-#write test to file
-openfile = open ("record012.txt", "w")
+# write test to file
+openfile = open("record012.txt", "w")
 openfile.write("number of iteration: " + str(iter_num) + "\n")
 openfile.write("training error: " + str(trc.training_error()) + "\n")
 openfile.write("Correct percentage: " + str(cpt) + "\n")

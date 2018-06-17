@@ -17,6 +17,7 @@ datadir = r"C:\D\senior_thesis\handwritten_num\samples\comp20data"
 training_percentage = 0.5
 recnum = 1
 
+#load and split data
 alldat = loadDataset(datadir, ["dat.csv"], datatype=float, labcol=0)
 n = len(alldat)
 trn = int(n * training_percentage)

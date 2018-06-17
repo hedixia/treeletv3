@@ -1,5 +1,3 @@
-import csv
-
 import numpy as np
 
 from Dataset import Dataset
@@ -22,11 +20,10 @@ class loadDataset(Dataset):
 		self.label = []
 
 	def load (self, filename):
-		csvfile = open(self.datadir + filename)
-		newdata = np.matrix(csv.reader(csvfile))
-		newdata.astype(self.DataType, copy=True)
+		csvfile = np.genfromtxt(self.datadir + filename, delimiter=',')
+		newdata = np.matrix(csvfile).astype(self.DataType)
 		if self.LabelColumn is not None:
-			self.label.append(newdata[:,i])
+			self.label.append(newdata[:, i])
 			newdata = np.delete(newdata, i, axis=1)
 		if len(y) is 0:
 			self.M = newdata
