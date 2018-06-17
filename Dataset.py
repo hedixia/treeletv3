@@ -17,8 +17,9 @@ class Dataset:
 	def __getitem__ (self, item):
 		return self.M[item, :]
 
-	def l (self, item):
-		return self.label[item]
+	@property
+	def l (self):
+		return self.label
 
 	def __add__ (self, other, otherlabel=[]):
 		return Dataset(np.vstack([self.M, other.M]), self.label + otherlabel)
@@ -37,7 +38,8 @@ class Dataset:
 			self.mean = np.mean(self.M, axis=0).tolist()[0]
 		return self.mean
 
-	def get_mean (self):
+	@property
+	def Mean (self):
 		return np.mean(self.get_mean_array())
 
 	def get_var_array (self):
@@ -45,5 +47,6 @@ class Dataset:
 			self.var = np.var(self.M, axis=0).tolist()[0]
 		return self.var
 
-	def get_var (self):
+	@property
+	def Var (self):
 		return sum(self.get_var_array())

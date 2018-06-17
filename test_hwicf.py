@@ -14,7 +14,7 @@ from SVM import SVM
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 datadir = r"C:\D\senior_thesis\handwritten_num\samples\comp20data"
 iter_num = 3
-trdataextract = {i:1000 for i in range(10)}
+trdataextract = {i:10 for i in range(10)}
 tsdataextract = {i:100 for i in range(10)}
 
 def labeling (idict):
