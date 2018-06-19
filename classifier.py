@@ -10,9 +10,10 @@ class classifier(clust):
 	def build (self):
 		super().build()
 		if len(self) is 0:
-			raise ValueError
+			raise ValueError("Empty dataset.")
 		if len(self.dataset_ref) != len(self.trlabel):
-			raise ValueError
+			errorstring = "Length of dataset ({0}) is not equal to the length of its label ({1}).".format(len(self.dataset_ref), len(self.trlabel))
+			raise ValueError(errorstring)
 
 	def predict (self, test_data):
 		return self.trlabel[0]

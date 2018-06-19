@@ -26,9 +26,9 @@ class Dataset:
 
 	def getSlice (self, slice):
 		if len(self.label) is 0:
-			return Dataset(self.M[slice:])
+			return Dataset(self.M[slice, :])
 		else:
-			return Dataset(self.M[slice:], [self.label[i] for i in slice])
+			return Dataset(self.M[slice, :], [self.label[i] for i in slice])
 
 	def getT (self):
 		return Dataset(self.M.getT())

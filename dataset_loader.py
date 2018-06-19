@@ -12,21 +12,20 @@ class loadDataset(Dataset):
 			datatype: datatype of the imported data
 			labcol: the column of the label, if not applicable, set to None
 		"""
-		super().__init__(self, **kwargs)
+		super().__init__(**kwargs)
 		self.datadir = datadir
 		self.filenames = [filenames] if type(filenames) is str else filenames
 		for filename in self.filenames:
 			self.load(filename)
-		self.label = []
 
 	def load (self, filename):
-		csvfile = np.genfromtxt(self.datadir + filename, delimiter=',')
+		csvfile = np.genfromtxt(self.datadir + filename, delimiter=',', dtype=self.DataType)
 		newdata = np.matrix(csvfile)
 		if self.LabelColumn is not None:
-			self.label.append(newdata[:, i])
-			newdata = np.delete(newdata, i, axis=1)
-		newdata.astype(self.DataType, copy=False)
-		if len(y) is 0:
+			labelfile = np.genfromtxt(self.datadir + filename, delimiter=',', dtype=None)
+			self.label += labelfile['f' + str(self.LabelColumn)].tolist()
+			newdata = np.delete(newdata, self.LabelColumn, axis=1)
+		if self.n is 0:
 			self.M = newdata
 		else:
 			self.M = np.vstack([self.M, newdata])
