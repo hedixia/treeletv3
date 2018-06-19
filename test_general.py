@@ -13,7 +13,7 @@ from dataset_loader import loadDataset
 
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
-datadir = r"C:\D\senior_thesis\handwritten_num\samples\comp20data"
+datadir = r"C:\Users\Hedi Xia\Desktop\datasets\MPE"
 training_percentage = 0.5
 recnum = 1
 
