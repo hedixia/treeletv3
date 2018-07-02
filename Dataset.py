@@ -3,11 +3,15 @@ import numpy as np
 
 class Dataset:
 	def __init__ (self, matrix=[], label=[], **kwargs):
-		self.M = np.matrix(matrix)
-		self.n = len(matrix)
-		self.mean = None
-		self.var = None
-		self.label = label
+		if matrix.__class__ == self.__class__:
+			self.__dict__ = matrix.__dict__
+		else:
+			self.M = np.matrix(matrix)
+			self.n = len(matrix)
+			self.mean = None
+			self.var = None
+			self.label = label
+
 		for key, value in kwargs.items():
 			setattr(self, key, value)
 

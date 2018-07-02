@@ -1,4 +1,5 @@
 import numpy as np
+from Dataset import Dataset
 
 class RebuildError (Exception):
 	pass
@@ -17,6 +18,11 @@ class clust:
 		self.labels = {}
 		self.clusters = {}
 
+	def fit(self, X):
+		self.dataset_ref = Dataset(X)
+		self.input_slice()
+		self.build()
+
 	def get (self, return_type="clusters"):
 		if return_type in ["C", "clusters"]:
 			return self.clusters
@@ -32,7 +38,7 @@ class clust:
 		for i in self.clusters:
 			print(i, self.clusters[i])
 
-	def input_slice (self, slice, out=False):
+	def input_slice (self, slice=False, out=False):
 		if slice is False:
 			size = len(self.dataset_ref)
 			slice = range(size)
@@ -47,6 +53,17 @@ class clust:
 		else:
 			self.size = size
 			self.slice = slice
+
+	@property
+	def labels_ (self):
+		try:
+			return self.sorted_labels
+		except AttributeError:
+			try:
+				self.sorted_labels = [self.labels[i] for i in sorted(self.labels)]
+				return self.sorted_labels
+			except AttributeError:
+				raise AttributeError("labels object does not exist.")
 
 	def __len__ (self):
 		return self.size
