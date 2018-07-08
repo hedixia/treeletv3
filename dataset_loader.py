@@ -1,4 +1,5 @@
 import numpy as np
+import os
 
 from Dataset import Dataset
 
@@ -19,10 +20,10 @@ class loadDataset(Dataset):
 			self.load(filename)
 
 	def load (self, filename):
-		csvfile = np.genfromtxt(self.datadir + filename, delimiter=',', dtype=self.DataType)
+		csvfile = np.genfromtxt(os.path.join(self.datadir, filename), delimiter=',', dtype=self.DataType)
 		newdata = np.matrix(csvfile)
 		if self.LabelColumn is not None:
-			labelfile = np.genfromtxt(self.datadir + filename, delimiter=',', dtype=None)
+			labelfile = np.genfromtxt(os.path.join(self.datadir, filename), delimiter=',', dtype=None)
 			self.label += labelfile['f' + str(self.LabelColumn)].tolist()
 			newdata = np.delete(newdata, self.LabelColumn, axis=1)
 		if self.n is 0:

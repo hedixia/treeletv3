@@ -2,7 +2,9 @@ import numpy as np
 
 
 class Dataset:
-	def __init__ (self, matrix=[], label=[], **kwargs):
+	def __init__ (self, matrix=None, label=None, **kwargs):
+		matrix = [] if matrix is None else matrix
+		label = [] if label is None else label
 		if matrix.__class__ == self.__class__:
 			self.__dict__ = matrix.__dict__
 		else:
