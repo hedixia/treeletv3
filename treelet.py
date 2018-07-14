@@ -35,7 +35,7 @@ def jacobi_rotation (M, k, l, tol=0.00000000001):
 
 class treelet:
 	def __init__ (self, A, psi):
-		self.A = np.matrix(A, dtype=np.longdouble)
+		self.A = np.matrix(A)
 		self.phi = lambda x, y:psi(self.A[x, y], self.A[x, x], self.A[y, y])
 		self.n = self.A.shape[0]
 		self.max_row = {i:0 for i in range(self.n)}
