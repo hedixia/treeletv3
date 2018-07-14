@@ -9,7 +9,7 @@ class treelet_clust(clust):
 		super().__init__(dataset_ref, slice)
 		self.kernel = kernel
 		if num_clust < 1:
-			raise ValueError("0 cluster error.")
+			raise ValueError
 		self.num_clust = num_clust
 		if all_kernel:
 			temp_slice = np.array(self.slice, dtype=np.intp)
@@ -20,7 +20,7 @@ class treelet_clust(clust):
 
 	def build (self):
 		if self.size is 0:
-			raise ValueError("Input dataset has size 0.")
+			raise ValueError
 		trl = treelet(self.A, self.psi)
 		trl.fullrotate()
 		self.cltree = trl.tree()
@@ -37,6 +37,9 @@ class treelet_clust(clust):
 				temp_labels[current] = ending
 				current = temp_labels[current]
 		self.labels = dict(zip(self.slice, temp_labels))
+		for i in range(len(trl.dendrogram_list)):
+			print(i, trl.dendrogram_list[i])
+		self.temp_labels = temp_labels
 		self._l2c()
 
 	def assign (self, data):

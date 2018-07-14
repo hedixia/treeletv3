@@ -23,8 +23,8 @@ class kernel:
 			return (np.inner(x, y) + c)**delta
 		if self.name == "rbk":
 			# $K(x,y) = exp\{-\frac{||y-x||^2}{2\sigma^2}\}$
-			sigmasq2 = self.parameters[0] * self.parameters[0] * 2
-			return np.exp(-(np.inner(y - x, y - x)) / sigmasq2)
+			invsigmasq2 = 1/(self.parameters[0] * self.parameters[0] * 2)
+			return np.exp(-(np.inner(y - x, y - x)) * invsigmasq2)
 
 	def __bool__ (self):
 		return True

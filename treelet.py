@@ -35,11 +35,12 @@ def jacobi_rotation (M, k, l, tol=0.00000000001):
 
 class treelet:
 	def __init__ (self, A, psi):
-		self.A = np.matrix(A)
+		self.A = np.matrix(A, dtype=np.longdouble)
 		self.phi = lambda x, y:psi(self.A[x, y], self.A[x, x], self.A[y, y])
 		self.n = self.A.shape[0]
 		self.max_row = {i:0 for i in range(self.n)}
 		self.transform_list = []
+		self.dendrogram_list = []
 
 	# Treelet Tree
 	def tree (self):
@@ -58,6 +59,10 @@ class treelet:
 			(p, q) = self._find()
 			(cos_val, sin_val) = jacobi_rotation(self.A, p, q)
 			self._record(p, q, cos_val, sin_val)
+			try:
+				self.dendrogram_list.append((np.log(self.A[p, q]) * 2 - np.log(self.A[p, p]) - np.log(self.A[q, q]), p, q))
+			except ZeroDivisionError:
+				self.dendrogram_list.append(None)
 
 	def _find (self):
 		if self.transform_list == []:
