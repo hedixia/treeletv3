@@ -37,7 +37,7 @@ def jacobi_rotation_log (M, k, l, tol=numlog(20)):
 
 
 class treelet:
-	def __init__ (self, A, psi):
+	def __init__ (self, A, psi=None):
 		self.A = np.matrix(A, dtype=numlog)
 		self.phi = lambda x, y:(~(self.A[x, x] * self.A[y, y]).sqrt()) * abs(
 			self.A[x, y])
