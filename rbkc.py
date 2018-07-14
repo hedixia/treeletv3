@@ -51,8 +51,14 @@ default_base = {'quantile': .3,
 				'n_clusters': 3}
 
 datasets = [
-	(noisy_circles, {'damping': .77, 'preference': -240,
-					 'quantile': .2, 'n_clusters': 2})]
+	(noisy_circles, {'damping':.77, 'preference':-240,
+	                 'quantile':.2, 'n_clusters':2}),
+	(noisy_moons, {'damping':.75, 'preference':-220, 'n_clusters':2}),
+	(varied, {'eps':.18, 'n_neighbors':2}),
+	(aniso, {'eps':.15, 'n_neighbors':2}),
+	(blobs, {}),
+	(no_structure, {})]
+
 printcountnum = 0
 for i_dataset, (dataset, algo_params) in enumerate(datasets):
 	printcountnum += 1
