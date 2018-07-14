@@ -99,6 +99,12 @@ class numlog:
 				raise Warning("square root of an negative number")
 			return numlog(self.num / 2)
 
+	def ln (self): #This returns a float
+		if self.iszero:
+			raise Warning("ln of 0")
+			return
+		return self.num
+
 	def __invert__ (self):  # get multiplicative inverse
 		return numlog(-self.num, self.pos)
 
