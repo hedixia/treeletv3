@@ -39,8 +39,8 @@ def jacobi_rotation_log (M, k, l, tol=numlog(20)):
 class treelet:
 	def __init__ (self, A, psi=None):
 		self.A = np.matrix(A, dtype=numlog)
-		self.phi = lambda x, y:(~(self.A[x, x] * self.A[y, y]).sqrt()) * abs(
-			self.A[x, y])
+		self.phi = lambda x, y:(~(self.A[x, x] * self.A[y, y]).sqrt()) \
+		                       * abs(self.A[x, y])
 		self.n = self.A.shape[0]
 		self.max_row = {i:0 for i in range(self.n)}
 		self.transform_list = []
@@ -89,7 +89,7 @@ class treelet:
 
 	def _max (self, col_num):
 		temp_max_row = 0
-		max_temp = 0
+		max_temp = numlog()
 		for i in self.max_row:
 			if i == col_num:
 				continue

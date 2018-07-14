@@ -85,7 +85,7 @@ for i_dataset, (dataset, algo_params) in enumerate(datasets):
 	
 	import TC 
 	import kernel
-	tempL = [0.3]
+	tempL = [0.1]
 	rbkdict = {x:TC.TC("rbk", 2) for x in tempL}
 	for i in rbkdict:
 		rbkdict[i].ker = kernel.kernel("rbk", [i])

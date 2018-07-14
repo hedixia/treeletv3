@@ -59,10 +59,6 @@ class treelet:
 			(p, q) = self._find()
 			(cos_val, sin_val) = jacobi_rotation(self.A, p, q)
 			self._record(p, q, cos_val, sin_val)
-			try:
-				self.dendrogram_list.append((np.log(self.A[p, q]) * 2 - np.log(self.A[p, p]) - np.log(self.A[q, q]), p, q))
-			except ZeroDivisionError:
-				self.dendrogram_list.append(None)
 
 	def _find (self):
 		if self.transform_list == []:
@@ -82,7 +78,9 @@ class treelet:
 					self._max(i)
 		v = list(self.max_row_val.values())
 		k = list(self.max_row_val.keys())
-		i = k[v.index(max(v))]
+		mv = max(v)
+		i = k[v.index(mv)]
+		self.dendrogram_list.append(np.log(mv))
 		return (self.max_row[i], i)
 
 	def _max (self, col_num):

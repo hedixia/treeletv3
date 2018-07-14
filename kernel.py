@@ -1,5 +1,5 @@
 import numpy as np
-
+from numlog import numlog
 
 class kernel:
 	def __init__ (self, name, parameters):

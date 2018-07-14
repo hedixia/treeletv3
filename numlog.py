@@ -24,11 +24,13 @@ class numlog:
 
 	@property
 	def iszero (self):
-		return self.num == None
+		return self.num is None
 
 	def __add__ (self, other):
 		if other.iszero:
 			return numlog(self.num, self.pos)
+		if self.iszero:
+			return numlog(other.num, other.pos)
 		pm_val = self.pos ^ other.pos
 		if self.num < other.num:
 			new_pos = other.pos
@@ -95,8 +97,6 @@ class numlog:
 		if self.iszero:
 			return numlog()
 		else:
-			if not self.pos:
-				raise Warning("square root of an negative number")
 			return numlog(self.num / 2)
 
 	def ln (self): #This returns a float
