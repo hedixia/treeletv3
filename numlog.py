@@ -10,7 +10,7 @@ def lnexp (pow, pm):
 		return np.log(np.exp(pow) + (1 if pm else -1))
 
 
-class num_log:
+class numlog:
 	def __init__ (self, num=None, pos=True):
 		self.pos = pos
 		self.num = num  # num=None is 0
@@ -28,7 +28,7 @@ class num_log:
 
 	def __add__ (self, other):
 		if other.iszero:
-			return num_log(self.num, self.pos)
+			return numlog(self.num, self.pos)
 		pm_val = self.pos ^ other.pos
 		if self.num < other.num:
 			new_pos = other.pos
@@ -36,26 +36,26 @@ class num_log:
 		else:
 			new_pos = self.pos
 			diffexp = self.num - other.num
-		return num_log(lnexp(diffexp, pm_val), new_pos)
+		return numlog(lnexp(diffexp, pm_val), new_pos)
 
 	def __sub__ (self, other):
 		return self + (- other)
 
 	def __mul__ (self, other):
 		if other.iszero:
-			return num_log()
-		return num_log(self.num + other.num, self.pos ^ other.pos)
+			return numlog()
+		return numlog(self.num + other.num, self.pos ^ other.pos)
 
 	def __truediv__ (self, other):
 		if other.iszero:
 			raise ZeroDivisionError
-		return num_log(self.num - other.num, self.pos ^ other.pos)
+		return numlog(self.num - other.num, self.pos ^ other.pos)
 
 	def __pow__ (self, other):  # other is of type float
-		return num_log(self.num * other, self.pos)
+		return numlog(self.num * other, self.pos)
 
 	def __neg__ (self):
-		return num_log(self.num, not self.pos)
+		return numlog(self.num, not self.pos)
 
 	def __lt__ (self, other):
 		if self.pos ^ other.pos:
@@ -89,18 +89,18 @@ class num_log:
 		return not (self < other)
 
 	def __abs__ (self):
-		return num_log(self.num, True)
+		return numlog(self.num, True)
 
 	def sqrt (self):
 		if self.iszero:
-			return num_log()
+			return numlog()
 		else:
 			if not self.pos:
 				raise Warning("square root of an negative number")
-			return num_log(self.num / 2)
+			return numlog(self.num / 2)
 
 	def __invert__ (self):  # get multiplicative inverse
-		return num_log(-self.num, self.pos)
+		return numlog(-self.num, self.pos)
 
 	def __float__ (self):
 		if self.iszero:

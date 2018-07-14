@@ -1,9 +1,9 @@
 import numpy as np
 
-from numlog import num_log
+from numlog import numlog
 
 
-def jacobi_rotation_log (M, k, l, tol=num_log(20)):
+def jacobi_rotation_log (M, k, l, tol=numlog(20)):
 	"""
 	input: numpy matrix for rotation M, two different row number k and l 
 	output: cos and sin value of rotation 
@@ -12,13 +12,13 @@ def jacobi_rotation_log (M, k, l, tol=num_log(20)):
 
 	# rotation matrix calc
 	if M[k, l] + M[l, k] < tol:
-		cos_val = num_log(0)  # 1
-		sin_val = num_log()  # 0
+		cos_val = numlog(0)  # 1
+		sin_val = numlog()  # 0
 	else:
 		b = (M[l, l] - M[k, k]) / (M[k, l] + M[l, k])
-		tan_val = (num_log(0) if b.pos else num_log(0, False)) / (
-				abs(b) + (b * b + num_log(0)).sqrt())  # |tan_val| < 1
-		cos_val = ~(tan_val * tan_val + num_log(0)).sqrt()  # cos_val > 0
+		tan_val = (numlog(0) if b.pos else numlog(0, False)) / (
+				abs(b) + (b * b + numlog(0)).sqrt())  # |tan_val| < 1
+		cos_val = ~(tan_val * tan_val + numlog(0)).sqrt()  # cos_val > 0
 		sin_val = cos_val * tan_val  # |cos_val| > |sin_val|
 
 	# right multiplication by jacobian matrix
@@ -38,7 +38,7 @@ def jacobi_rotation_log (M, k, l, tol=num_log(20)):
 
 class treelet:
 	def __init__ (self, A):
-		self.A = np.matrix(A, dtype=num_log)
+		self.A = np.matrix(A, dtype=numlog)
 		self.phi = lambda x, y:(~(self.A[x, x] * self.A[y, y]).sqrt()) * abs(
 			self.A[x, y])
 		self.n = self.A.shape[0]
