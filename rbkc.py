@@ -70,9 +70,6 @@ for i_dataset, (dataset, algo_params) in enumerate(datasets):
 
 	X, y = dataset
 
-	X = np.concatenate((X[10:], X[:10]), axis=0)
-	y = np.concatenate((y[10:], y[:10]), axis=0)
-
 	# normalize dataset for easier parameter selection
 	X = StandardScaler().fit_transform(X)
 

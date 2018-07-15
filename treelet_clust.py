@@ -37,8 +37,6 @@ class treelet_clust(clust):
 				temp_labels[current] = ending
 				current = temp_labels[current]
 		self.labels = dict(zip(self.slice, temp_labels))
-		for i in range(len(trl.dendrogram_list)):
-			print(i, trl.dendrogram_list[i])
 		self.temp_labels = temp_labels
 		self._l2c()
 
