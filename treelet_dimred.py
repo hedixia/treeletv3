@@ -79,6 +79,10 @@ class treelet_dimred:
 				returnL[j] = tempL[-1]
 		return returnL
 
+	@property
+	def mean_ (self):
+		return self.avedat
+
 	def __len__ (self):
 		return self.n
 
