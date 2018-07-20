@@ -39,9 +39,9 @@ class treelet_dimred:
 		if epsilon == 0:
 			return (v, None)
 		else:
-			scaling_part = v[:, self.dfrk[:k]]
-			difference_part = v[:, self.dfrk[k:]]
-			difference_mat = coo_matrix(abs(difference_part) > epsilon).multiply(difference_part)
+			scaling_part = np.concatenate([v[:, self.dfrk[i]] for i in range(k, cols)], axis=1)
+			difference_part = np.concatenate([v[:, self.dfrk[i]] for i in range(k)], axis=1)
+			difference_mat = coo_matrix(abs(difference_part)>epsilon).multiply(difference_part)
 			return (scaling_part, difference_mat)
 
 	def inverse_transform (self, scaling_part, difference_mat=False):
@@ -50,7 +50,8 @@ class treelet_dimred:
 		cols = self.n
 		k = cols - scaling_part.shape[1]
 		v = np.matrix(np.zeros((rows, cols)))
-		v[:, self.dfrk[k:]] = scaling_part
+		for i in range(k, cols):
+			v[:, self.dfrk[i]] = scaling_part[i]
 		for iter in reversed(self.transform_list):
 			(scv, cgs, cos_val, sin_val) = iter
 			temp_scv = cos_val * v[:, scv] + sin_val * v[:, cgs]
@@ -58,7 +59,8 @@ class treelet_dimred:
 			v[:, scv] = temp_scv
 			v[:, cgs] = temp_cgs
 		if difference_mat:
-			v[:, self.dfrk[:k]] += difference_mat
+			for i in range(k):
+				v[:, self.dfrk[i]] += difference_mat[i]
 		return v + self.avedat
 
 	def cluster (self, k):
