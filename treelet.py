@@ -61,12 +61,8 @@ class treelet:
 			self._record(p, q, cos_val, sin_val)
 
 	def _find (self):
-		if self.transform_list == []:
-			self.max_row_val = {}
-			for i in self.max_row:
-				self._max(i)
-		else:
-			(l, k, cos_val, sin_val) = self.current
+		if self.transform_list:
+			l, k, _, _ = self.current
 			for i in self.max_row:
 				if i == k or i == l:
 					self._max(i)
@@ -76,6 +72,10 @@ class treelet:
 					self.max_row[i] = l
 				if self.max_row[i] == k or self.max_row[i] == l:
 					self._max(i)
+		else:
+			self.max_row_val = {}
+			[self._max(i) for i in self.max_row]
+
 		v = list(self.max_row_val.values())
 		k = list(self.max_row_val.keys())
 		mv = max(v)

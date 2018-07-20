@@ -36,7 +36,7 @@ class treelet_dimred:
 			v[scv] = temp_scv
 			v[cgs] = temp_cgs
 		if epsilon == 0:
-			return [v, None]
+			return (v, None)
 		else:
 			newdict = {}
 			newvec = np.zeros(n - k)
