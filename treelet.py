@@ -61,15 +61,15 @@ class treelet:
 
 	def _find (self):
 		if self.transform_list:
-			l, k, _, _ = self.current
+			k, l, *_ = self.current
 			for i in self.max_row:
-				if i == k or i == l:
+				if i in (k, l):
 					self._max(i)
-				if self.phi(self.max_row[i], i) < self.phi(k, i):
-					self.max_row[i] = k
 				if self.phi(self.max_row[i], i) < self.phi(l, i):
 					self.max_row[i] = l
-				if self.max_row[i] == k or self.max_row[i] == l:
+				if self.phi(self.max_row[i], i) < self.phi(k, i):
+					self.max_row[i] = k
+				if self.max_row[i] in (k, l):
 					self._max(i)
 		else:
 			self.max_row_val = {}
@@ -77,9 +77,9 @@ class treelet:
 
 		v = list(self.max_row_val.values())
 		k = list(self.max_row_val.keys())
-		mv = max(v)
-		i = k[v.index(mv)]
-		self.dendrogram_list.append(np.log(mv))
+		max_v = max(v)
+		i = k[v.index(max_v)]
+		self.dendrogram_list.append(np.log(max_v))
 		return (self.max_row[i], i)
 
 	def _max (self, col_num):
@@ -95,13 +95,7 @@ class treelet:
 		self.max_row[col_num] = temp_max_row
 		self.max_row_val[col_num] = max_temp
 
-	def _pair_gen (self):
-		v = list(self.max_row_val.values())
-		k = list(self.max_row_val.keys())
-		i = k[v.index(max(v))]
-		return (self.max_row[i], i)
-
-	def _record (self, l, k, cos_val, sin_val, drop=True):
+	def _record (self, l, k, cos_val, sin_val):
 		if self.A[l, l] < self.A[k, k]:
 			self.current = (k, l, cos_val, sin_val)
 		else:
