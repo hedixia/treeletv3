@@ -52,8 +52,7 @@ class treelet:
 
 	def rotate (self, multi=False):
 		if multi:
-			for i in range(multi):
-				self.rotate()
+			[self.rotate() for _ in range(multi)]
 			self.dfrk = [self.transform_list[i][1] for i in range(self.n - 1)].append(self.transform_list[-1][0])
 		else:
 			(p, q) = self._find()
