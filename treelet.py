@@ -52,8 +52,10 @@ class treelet:
 
 	def rotate (self, multi=False):
 		if multi:
-			[self.rotate() for _ in range(multi)]
-			self.dfrk = [self.transform_list[i][1] for i in range(self.n - 1)].append(self.transform_list[-1][0])
+			for _ in range(multi):
+				self.rotate()
+			self.dfrk = [self.transform_list[i][1] for i in range(self.n - 1)]
+			self.dfrk.append(self.transform_list[-1][0])
 		else:
 			(p, q) = self._find()
 			(cos_val, sin_val) = jacobi_rotation(self.A, p, q)

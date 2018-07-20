@@ -1,7 +1,6 @@
 import numpy as np
 
 from treelet import treelet
-from scipy.sparse import coo_matrix
 
 
 def listgen (L, start):
@@ -22,6 +21,7 @@ class treelet_dimred:
 		self.cov = np.cov(self.dataset_ref.getT())
 		psi = lambda x, y, z:abs(x) / np.sqrt(np.abs(y * z)) + abs(x) * self.t
 		self.trl = treelet(self.cov, psi)
+		self.trl.fullrotate()
 		self.n = self.trl.n
 		self.transform_list = self.trl.transform_list
 		self.dfrk = self.trl.dfrk
@@ -51,7 +51,7 @@ class treelet_dimred:
 		k = cols - scaling_part.shape[1]
 		v = np.matrix(np.zeros((rows, cols)))
 		for i in range(k, cols):
-			v[:, self.dfrk[i]] = scaling_part[i]
+			v[:, self.dfrk[i]] = scaling_part[:, i]
 		for iter in reversed(self.transform_list):
 			(scv, cgs, cos_val, sin_val) = iter
 			temp_scv = cos_val * v[:, scv] + sin_val * v[:, cgs]
@@ -60,7 +60,7 @@ class treelet_dimred:
 			v[:, cgs] = temp_cgs
 		if difference_mat:
 			for i in range(k):
-				v[:, self.dfrk[i]] += difference_mat[i]
+				v[:, self.dfrk[i]] += difference_mat[:, i]
 		return v + self.avedat
 
 	def cluster (self, k):
@@ -84,4 +84,8 @@ class treelet_dimred:
 	def __len__ (self):
 		return self.n
 
-	self.__call__ = self.transform
+	__call__ = transform
+	
+	@property
+	def components_ (self):
+		return self.transform(np.identity(self.n))[0] - self.avedat
