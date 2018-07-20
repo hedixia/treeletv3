@@ -57,7 +57,7 @@ class treelet_dimred:
 			temp_cgs = -sin_val * v[:, scv] + cos_val * v[:, cgs]
 			v[:, scv] = temp_scv
 			v[:, cgs] = temp_cgs
-		for i in diffdict:
+		if difference_mat:
 			v[:, self.dfrk[:k]] += difference_mat
 		return v + self.avedat
 
