@@ -29,8 +29,8 @@ class treelet_dimred:
 	# Treelet Transform
 	def transform (self, v, k=False, epsilon=0):
 		v = np.matrix(v) - self.avedat
-		k = k if k else self.n - 1
-		for iter in range(k):
+		k = k if k else 1
+		for iter in range(self.n - k):
 			(scv, cgs, cos_val, sin_val) = self.transform_list[iter]
 			temp_scv = cos_val * v[:, scv] - sin_val * v[:, cgs]
 			temp_cgs = sin_val * v[:, scv] + cos_val * v[:, cgs]
@@ -64,17 +64,9 @@ class treelet_dimred:
 		return v + self.avedat
 
 	def cluster (self, k):
-		returnL = [i for i in range(self.n)]
-		for i in range(k):
-			returnL[self.transform_list[i][1]] = self.transform_list[i][0]
-		for i in range(n):
-			if returnL[i] == i:
-				continue
-			if returnL[returnL[i]] == returnL[i]:
-				continue
-			tempL = list(listgen(returnL, i))
-			for j in tempL:
-				returnL[j] = tempL[-1]
+		returnL = list(range(self.n))
+		for i in range(self.n - k, -1, -1):
+			returnL[self.transform_list[i][1]] = returnL[self.transform_list[i][0]]
 		return returnL
 
 	@property
@@ -86,6 +78,5 @@ class treelet_dimred:
 
 	__call__ = transform
 	
-	@property
-	def components_ (self):
-		return self.transform(np.identity(self.n))[0] - self.avedat
+	def components_ (self, k):
+		return self.transform(np.identity(self.n) + self.avedat, k=k)[0]
