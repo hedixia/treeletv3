@@ -41,7 +41,7 @@ class treelet_dimred:
 		else:
 			scaling_part = np.concatenate([v[:, self.dfrk[i]] for i in range(k, cols)], axis=1)
 			difference_part = np.concatenate([v[:, self.dfrk[i]] for i in range(k)], axis=1)
-			difference_mat = coo_matrix(abs(difference_part)>epsilon).multiply(difference_part)
+			difference_mat = coo_matrix(abs(difference_part) > epsilon).multiply(difference_part)
 			return (scaling_part, difference_mat)
 
 	def inverse_transform (self, scaling_part, difference_mat=False):
@@ -77,6 +77,6 @@ class treelet_dimred:
 		return self.n
 
 	__call__ = transform
-	
+
 	def components_ (self, k):
 		return self.transform(np.identity(self.n) + self.avedat, k=k)[0]
