@@ -3,13 +3,6 @@ import numpy as np
 from treelet import treelet
 
 
-def listgen (L, start):
-	i = start
-	while L[i] != i:
-		yield i
-		i = L[i]
-
-
 class treelet_dimred:
 	def __init__ (self, t=0):
 		self.t = t
